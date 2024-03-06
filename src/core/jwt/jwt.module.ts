@@ -2,7 +2,7 @@ import { DynamicModule, Module } from '@nestjs/common';
 import { JwtModule, JwtService } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 
-import { JwtExModuleAsyncOptions, JwtStrategyConfigService } from './interfaces';
+import { JwtExModuleAsyncOptions, JwtStrategyConfig } from './interfaces';
 import { JwtGuard } from './jwt.guard';
 import { JwtStrategy } from './jwt.strategy';
 
@@ -13,8 +13,8 @@ export class JwtExModule {
       {
         ...options,
         provide: JwtStrategy,
-        useFactory(jwtStrategyConfigService: JwtStrategyConfigService) {
-          return new JwtStrategy(jwtStrategyConfigService);
+        useFactory(jwtStrategyConfig: JwtStrategyConfig) {
+          return new JwtStrategy(jwtStrategyConfig);
         },
       },
       JwtService,

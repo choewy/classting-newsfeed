@@ -1,10 +1,10 @@
 import { AbstractConfigService } from '@core/config';
-import { JwtStrategyConfigService } from '@core/jwt';
+import { JwtStrategyConfig } from '@core/jwt';
 import { Injectable } from '@nestjs/common';
 import { JwtModuleOptions, JwtSignOptions } from '@nestjs/jwt';
 
 @Injectable()
-export class JwtConfigService extends AbstractConfigService implements JwtStrategyConfigService {
+export class JwtConfigService extends AbstractConfigService implements JwtStrategyConfig {
   private readonly JWT_ACCESS_SECRET = this.configService.get<string>('JWT_ACCESS_SECRET');
   private readonly JWT_REFRESH_SECRET = this.configService.get<string>('JWT_REFRESH_SECRET');
 
