@@ -23,8 +23,8 @@ describe('AuthService', () => {
     service = module.get(AuthService);
 
     const accountRepository = module.get(AccountRepository);
-    jest.spyOn(accountRepository, 'createAccountAsAdmin').mockResolvedValue(AuthFixture.Admin);
-    jest.spyOn(accountRepository, 'createAccountAsStudent').mockResolvedValue(AuthFixture.Student);
+    jest.spyOn(accountRepository, 'createAccountAsAdmin').mockResolvedValue(AuthFixture.AdminAccount());
+    jest.spyOn(accountRepository, 'createAccountAsStudent').mockResolvedValue(AuthFixture.StudentAccount());
 
     const jwtConfigService = module.get(JwtConfigService);
     jest.spyOn(jwtConfigService, 'getAccessSignOptions').mockReturnValue({ secret: 'secret', expiresIn: '1h' });
@@ -79,14 +79,14 @@ describe('AuthService', () => {
     });
 
     it('비밀번호가 틀리면 WrongEmailOrPasswordException을 던진다.', () => {
-      jest.spyOn(module.get(AccountRepository), 'findByEmail').mockResolvedValue(AuthFixture.Admin);
+      jest.spyOn(module.get(AccountRepository), 'findByEmail').mockResolvedValue(AuthFixture.AdminAccount());
 
       const command = AuthFixture.SigninCommand({ password: 'wrong password' });
       expect(service.signin(command)).rejects.toBeInstanceOf(WrongEmailOrPasswordException);
     });
 
     it('로그인에 성공하면 TokensDto를 반환한다.', () => {
-      jest.spyOn(module.get(AccountRepository), 'findByEmail').mockResolvedValue(AuthFixture.Admin);
+      jest.spyOn(module.get(AccountRepository), 'findByEmail').mockResolvedValue(AuthFixture.AdminAccount());
 
       const command = AuthFixture.SigninCommand();
       expect(service.signin(command)).resolves.toBeInstanceOf(TokensDto);

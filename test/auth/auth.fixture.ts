@@ -1,33 +1,40 @@
 import { AccountType } from '@common/constants';
-import { AccountEntity } from '@common/entities';
+import { AccountEntity, AdminEntity, StudentEntity } from '@common/entities';
 import { SigninCommand, SignupCommand } from '@domain/auth/commands';
 import { hashSync } from 'bcrypt';
 import { plainToInstance } from 'class-transformer';
+import { DeepPartial } from 'typeorm';
 
 export class AuthFixture {
-  static readonly Admin = plainToInstance(
-    AccountEntity,
-    {
-      id: 1,
-      email: 'user@example.com',
-      password: hashSync('password', 10),
-      admin: { id: 1 },
-      student: null,
-    },
-    { enableCircularCheck: true, enableImplicitConversion: true },
-  );
+  static AdminAccount(replaceValues?: DeepPartial<AdminEntity>) {
+    return plainToInstance(
+      AccountEntity,
+      {
+        id: 1,
+        email: 'user@example.com',
+        password: hashSync('password', 10),
+        admin: { id: 1 },
+        student: null,
+        ...replaceValues,
+      },
+      { enableCircularCheck: true, enableImplicitConversion: true },
+    );
+  }
 
-  static readonly Student = plainToInstance(
-    AccountEntity,
-    {
-      id: 1,
-      email: 'user@example.com',
-      password: hashSync('password', 10),
-      admin: null,
-      student: { id: 1 },
-    },
-    { enableCircularCheck: true, enableImplicitConversion: true },
-  );
+  static StudentAccount(replaceValues?: DeepPartial<StudentEntity>) {
+    return plainToInstance(
+      AccountEntity,
+      {
+        id: 1,
+        email: 'user@example.com',
+        password: hashSync('password', 10),
+        admin: null,
+        student: { id: 1 },
+        ...replaceValues,
+      },
+      { enableCircularCheck: true, enableImplicitConversion: true },
+    );
+  }
 
   static SignupCommand(type: AccountType, replaceValues?: Partial<SignupCommand>) {
     return {
