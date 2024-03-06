@@ -5,10 +5,12 @@ import { AbstractConfigService } from './abstracts';
 
 @Module({})
 export class ConfigExModule {
-  static forRoot(): DynamicModule {
+  static forRoot(services?: Type<AbstractConfigService>[]): DynamicModule {
     return {
       imports: [ConfigModule.forRoot()],
       module: ConfigExModule,
+      providers: services,
+      exports: services,
       global: true,
     };
   }

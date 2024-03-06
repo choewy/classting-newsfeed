@@ -8,7 +8,7 @@ export class AccountEntity extends BaseEntity {
   @PrimaryGeneratedColumn({ type: 'int', unsigned: true })
   readonly id: number;
 
-  @Column({ type: 'varchar', length: 320 })
+  @Column({ type: 'varchar', length: 320, unique: true })
   email: string;
 
   @Column({ type: 'varchar', length: 100 })
