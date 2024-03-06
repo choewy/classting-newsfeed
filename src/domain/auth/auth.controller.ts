@@ -1,8 +1,9 @@
-import { Body, Controller, Post } from '@nestjs/common';
-import { ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Body, Controller, Post, Req } from '@nestjs/common';
+import { ApiBearerAuth, ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { Request } from 'express';
 
 import { AuthService } from './auth.service';
-import { SignupCommand } from './commands';
+import { RefreshTokensCommand, SignupCommand } from './commands';
 import { SigninCommand } from './commands/signin.command';
 import { TokensDto } from './dtos';
 
@@ -23,5 +24,13 @@ export class AuthController {
   @ApiCreatedResponse({ type: TokensDto })
   async signin(@Body() command: SigninCommand) {
     return this.authService.signin(command);
+  }
+
+  @Post('tokens/refresh')
+  @ApiBearerAuth()
+  @ApiOperation({ summary: '토큰 갱신/재발급' })
+  @ApiCreatedResponse({ type: TokensDto })
+  async refreshTokens(@Req() req: Request, @Body() command: RefreshTokensCommand) {
+    return this.authService.refreshTokens(req, command);
   }
 }

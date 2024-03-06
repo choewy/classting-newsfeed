@@ -3,11 +3,12 @@ import { AccountEntity } from '@common/entities';
 import { AlreadyExistsAccountException, NotSamePasswordsException, WrongEmailOrPasswordException } from '@common/implements';
 import { AccountRepository } from '@common/repositories';
 import { JwtConfigService } from '@config/jwt-config.service';
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import bcrypt from 'bcrypt';
+import { Request } from 'express';
 
-import { SigninCommand, SignupCommand } from './commands';
+import { RefreshTokensCommand, SigninCommand, SignupCommand } from './commands';
 import { TokensDto } from './dtos';
 
 @Injectable()
@@ -46,8 +47,8 @@ export class AuthService {
     }
   }
 
-  createTokens(type: AccountType, account: AccountEntity) {
-    const payload = { id: account.id, type };
+  createTokens(type: AccountType, id: number) {
+    const payload = { type, id };
 
     return new TokensDto(
       this.jwtService.sign(payload, this.jwtConfigService.getAccessSignOptions()),
@@ -64,7 +65,8 @@ export class AuthService {
       throw new NotSamePasswordsException();
     }
 
-    return this.createTokens(command.type, await this.createAccountByType(command));
+    const account = await this.createAccountByType(command);
+    return this.createTokens(command.type, account.id);
   }
 
   async signin(command: SigninCommand) {
@@ -78,6 +80,19 @@ export class AuthService {
       throw new WrongEmailOrPasswordException();
     }
 
-    return this.createTokens(this.getAccountType(account), account);
+    return this.createTokens(this.getAccountType(account), account.id);
+  }
+
+  refreshTokens(req: Request, { access, refresh }: RefreshTokensCommand) {
+    const bearer = (req.headers.authorization ?? '').replace('Bearer ', '');
+    const bearerPayload = this.jwtService.verify(bearer, { ...this.jwtConfigService.getAccessSignOptions(), ignoreExpiration: true });
+    const accessPayload = this.jwtService.verify(access, { ...this.jwtConfigService.getAccessSignOptions(), ignoreExpiration: true });
+    const refreshPayload = this.jwtService.verify(refresh, { ...this.jwtConfigService.getRefreshSignOptions() });
+
+    if (bearerPayload.id !== accessPayload.id || accessPayload.id !== refreshPayload.id) {
+      throw new UnauthorizedException();
+    }
+
+    return this.createTokens(bearerPayload.type, bearerPayload.id);
   }
 }
