@@ -21,6 +21,7 @@
     "paths": {
       "@core/*": ["src/core/*"],
       "@common/*": ["src/common/*"],
+      "@config/*": ["src/config/*"],
       "@domains/*": ["src/domains/*"]
     }
   }

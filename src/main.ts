@@ -1,3 +1,4 @@
+import { WinstonLogger } from '@core/logger';
 import { SwaggerExModule } from '@core/swagger';
 import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 import { NestFactory, Reflector } from '@nestjs/core';
@@ -5,7 +6,9 @@ import { NestFactory, Reflector } from '@nestjs/core';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
+  const appName = 'NewsFeed';
+  const appLogger = WinstonLogger.create(appName);
+  const app = await NestFactory.create(AppModule, { logger: appLogger });
 
   SwaggerExModule.setup(app);
 
