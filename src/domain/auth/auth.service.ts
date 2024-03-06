@@ -1,6 +1,6 @@
 import { AccountType } from '@common/constants';
 import { AccountEntity } from '@common/entities';
-import { AlreadyExistsAccountException, NotSamePasswordsException, WrongEmailOrPasswordException } from '@common/implements';
+import { AlreadyExistAccountException, NotSamePasswordsException, WrongEmailOrPasswordException } from '@common/implements';
 import { AccountRepository } from '@common/repositories';
 import { JwtConfigService } from '@config/jwt-config.service';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
@@ -47,8 +47,8 @@ export class AuthService {
     }
   }
 
-  createTokens(type: AccountType, id: number) {
-    const payload = { type, id };
+  createTokens(type: AccountType, account: number, admin: number | null, student: number | null) {
+    const payload = { type, account, admin, student };
 
     return new TokensDto(
       this.jwtService.sign(payload, this.jwtConfigService.getAccessSignOptions()),
@@ -58,7 +58,7 @@ export class AuthService {
 
   async signup(command: SignupCommand) {
     if (await this.accountRepository.hasByEmail(command.email)) {
-      throw new AlreadyExistsAccountException();
+      throw new AlreadyExistAccountException();
     }
 
     if (command.password !== command.confirmPassword) {
@@ -66,7 +66,8 @@ export class AuthService {
     }
 
     const account = await this.createAccountByType(command);
-    return this.createTokens(command.type, account.id);
+
+    return this.createTokens(command.type, account.id, account.admin?.id ?? null, account.student?.id ?? null);
   }
 
   async signin(command: SigninCommand) {
@@ -80,7 +81,7 @@ export class AuthService {
       throw new WrongEmailOrPasswordException();
     }
 
-    return this.createTokens(this.getAccountType(account), account.id);
+    return this.createTokens(this.getAccountType(account), account.id, account.admin?.id ?? null, account.student?.id ?? null);
   }
 
   refreshTokens(req: Request, { access, refresh }: RefreshTokensCommand) {
@@ -89,10 +90,10 @@ export class AuthService {
     const accessPayload = this.jwtService.verify(access, { ...this.jwtConfigService.getAccessSignOptions(), ignoreExpiration: true });
     const refreshPayload = this.jwtService.verify(refresh, { ...this.jwtConfigService.getRefreshSignOptions() });
 
-    if (bearerPayload.id !== accessPayload.id || accessPayload.id !== refreshPayload.id) {
+    if (bearerPayload.account !== accessPayload.account || accessPayload.account !== refreshPayload.account) {
       throw new UnauthorizedException();
     }
 
-    return this.createTokens(bearerPayload.type, bearerPayload.id);
+    return this.createTokens(bearerPayload.type, bearerPayload.account, bearerPayload.admin, bearerPayload.student);
   }
 }

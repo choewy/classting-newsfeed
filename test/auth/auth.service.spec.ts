@@ -1,6 +1,6 @@
 import { AccountType } from '@common/constants';
 import { AdminEntity, StudentEntity } from '@common/entities';
-import { AlreadyExistsAccountException, NotSamePasswordsException, WrongEmailOrPasswordException } from '@common/implements';
+import { AlreadyExistAccountException, NotSamePasswordsException, WrongEmailOrPasswordException } from '@common/implements';
 import { AccountRepository } from '@common/repositories';
 import { JwtConfigService } from '@config/jwt-config.service';
 import { AuthService } from '@domain/auth/auth.service';
@@ -50,11 +50,11 @@ describe('AuthService', () => {
   });
 
   describe('signup', () => {
-    it('이메일 계정이 이미 존재하는 경우 AlreadyExistsAccountException을 던진다.', () => {
+    it('이메일 계정이 이미 존재하는 경우 AlreadyExistAccountException을 던진다.', () => {
       jest.spyOn(module.get(AccountRepository), 'hasByEmail').mockResolvedValue(true);
 
       const command = AuthFixture.SignupCommand(AccountType.Admin);
-      expect(service.signup(command)).rejects.toBeInstanceOf(AlreadyExistsAccountException);
+      expect(service.signup(command)).rejects.toBeInstanceOf(AlreadyExistAccountException);
     });
 
     it('password와 confirmPassword가 같지 않은 경우 NotSamePasswordsException을 던진다.', () => {
