@@ -19,7 +19,9 @@ export class AuthController {
   }
 
   @Post('signin')
+  @ApiOperation({ summary: '로그인' })
+  @ApiCreatedResponse({ type: TokensDto })
   async signin(@Body() command: SigninCommand) {
-    return;
+    return this.authService.signin(command);
   }
 }

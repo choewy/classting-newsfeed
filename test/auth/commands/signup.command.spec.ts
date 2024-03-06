@@ -1,4 +1,5 @@
-import { SignupCommand, SignupType } from '@domain/auth/commands';
+import { AccountType } from '@common/constants';
+import { SignupCommand } from '@domain/auth/commands';
 import { Validator } from '@utils/validator';
 import { ValidationError } from 'class-validator';
 
@@ -23,7 +24,7 @@ describe('SignupCommand', () => {
 
   it('email 형식에 맞지 않는 경우 ValidationError가 발생한다.', () => {
     const error = Validator.check(SignupCommand, {
-      type: SignupType.Admin,
+      type: AccountType.Admin,
       email: 'hello@world',
     });
 
@@ -34,7 +35,7 @@ describe('SignupCommand', () => {
 
   it('name의 길이가 1보다 작으면 ValidationError가 발생한다.', () => {
     const error = Validator.check(SignupCommand, {
-      type: SignupType.Admin,
+      type: AccountType.Admin,
       email: 'user@example.com',
       name: '',
     });
@@ -46,7 +47,7 @@ describe('SignupCommand', () => {
 
   it('name의 길이가 10보다 크면 ValidationError가 발생한다.', () => {
     const error = Validator.check(SignupCommand, {
-      type: SignupType.Admin,
+      type: AccountType.Admin,
       email: 'user@example.com',
       name: new Array(11).fill('최').join(''),
     });
@@ -58,7 +59,7 @@ describe('SignupCommand', () => {
 
   it('password의 길이가 8보다 작으면 ValidationError가 발생한다.', () => {
     const error = Validator.check(SignupCommand, {
-      type: SignupType.Admin,
+      type: AccountType.Admin,
       email: 'user@example.com',
       name: 'user',
       password: new Array(7).fill('@').join(''),
@@ -71,7 +72,7 @@ describe('SignupCommand', () => {
 
   it('password의 길이가 50보다 크면 ValidationError가 발생한다.', () => {
     const error = Validator.check(SignupCommand, {
-      type: SignupType.Admin,
+      type: AccountType.Admin,
       email: 'user@example.com',
       name: 'user',
       password: new Array(51).fill('@').join(''),
@@ -84,7 +85,7 @@ describe('SignupCommand', () => {
 
   it('confirmPassword의 길이가 8보다 작으면 ValidationError가 발생한다.', () => {
     const error = Validator.check(SignupCommand, {
-      type: SignupType.Admin,
+      type: AccountType.Admin,
       email: 'user@example.com',
       name: 'user',
       password: new Array(10).fill('@').join(''),
@@ -98,7 +99,7 @@ describe('SignupCommand', () => {
 
   it('confirmPassword의 길이가 51보다 크면 ValidationError가 발생한다.', () => {
     const error = Validator.check(SignupCommand, {
-      type: SignupType.Admin,
+      type: AccountType.Admin,
       email: 'user@example.com',
       name: 'user',
       password: new Array(10).fill('@').join(''),
@@ -112,7 +113,7 @@ describe('SignupCommand', () => {
 
   it('위의 모든 조건을 충족하면 ValdiationError가 발생하지 않는다.', () => {
     const error = Validator.check(SignupCommand, {
-      type: SignupType.Admin,
+      type: AccountType.Admin,
       email: 'user@example.com',
       name: 'user',
       password: new Array(10).fill('@').join(''),

@@ -19,11 +19,11 @@
     "noFallthroughCasesInSwitch": false,
     "esModuleInterop": true,
     "paths": {
+      "@utils/*": ["test/utils/*"],
       "@core/*": ["src/core/*"],
       "@config/*": ["src/config/*"],
       "@common/*": ["src/common/*"],
-      "@domain/*": ["src/domain/*"],
-      "@utils/*": ["src/utils/*"]
+      "@domain/*": ["src/domain/*"]
     }
   }
 }

@@ -1,30 +1,15 @@
-import { AccountEntity, AdminEntity, StudentEntity } from '@common/entities';
-import { AlreadyExistsAccountException, NotSamePasswordsException } from '@common/implements';
+import { AccountType } from '@common/constants';
+import { AdminEntity, StudentEntity } from '@common/entities';
+import { AlreadyExistsAccountException, NotSamePasswordsException, WrongEmailOrPasswordException } from '@common/implements';
 import { AccountRepository } from '@common/repositories';
 import { JwtConfigService } from '@config/jwt-config.service';
 import { AuthService } from '@domain/auth/auth.service';
-import { SignupType } from '@domain/auth/commands';
 import { TokensDto } from '@domain/auth/dtos';
 import { JwtService } from '@nestjs/jwt';
 import { Test, TestingModule } from '@nestjs/testing';
 import { Mock } from '@utils/mock';
-import { plainToInstance } from 'class-transformer';
 
-const adminSignupCommand = {
-  type: SignupType.Admin,
-  name: 'user',
-  email: 'user@example.com',
-  password: 'password',
-  confirmPassword: 'password',
-};
-
-const studentSignupCommand = {
-  type: SignupType.Student,
-  name: 'user',
-  email: 'user@example.com',
-  password: 'password',
-  confirmPassword: 'password',
-};
+import { AuthFixture } from './auth.fixture';
 
 describe('AuthService', () => {
   let module: TestingModule;
@@ -38,38 +23,26 @@ describe('AuthService', () => {
     service = module.get(AuthService);
 
     const accountRepository = module.get(AccountRepository);
-
-    jest
-      .spyOn(accountRepository, 'createAccountAsAdmin')
-      .mockResolvedValue(plainToInstance(AccountEntity, { id: 1, admin: new AdminEntity(), student: null }));
-
-    jest
-      .spyOn(accountRepository, 'createAccountAsStudent')
-      .mockResolvedValue(plainToInstance(AccountEntity, { id: 1, admin: null, student: new StudentEntity() }));
+    jest.spyOn(accountRepository, 'createAccountAsAdmin').mockResolvedValue(AuthFixture.Admin);
+    jest.spyOn(accountRepository, 'createAccountAsStudent').mockResolvedValue(AuthFixture.Student);
 
     const jwtConfigService = module.get(JwtConfigService);
-
-    jest.spyOn(jwtConfigService, 'getAccessSignOptions').mockReturnValue({
-      secret: 'jwt-access-secret',
-      expiresIn: '1h',
-    });
-
-    jest.spyOn(jwtConfigService, 'getRefreshSignOptions').mockReturnValue({
-      secret: 'jwt-refresh-secret',
-      expiresIn: '14d',
-    });
+    jest.spyOn(jwtConfigService, 'getAccessSignOptions').mockReturnValue({ secret: 'secret', expiresIn: '1h' });
+    jest.spyOn(jwtConfigService, 'getRefreshSignOptions').mockReturnValue({ secret: 'secret', expiresIn: '14d' });
   });
 
   describe('createAccountByType', () => {
     it('type이 admin인 경우 AdminEntity 계정을 생성한다.', async () => {
-      const account = await service.createAccountByType(adminSignupCommand);
+      const command = AuthFixture.SignupCommand(AccountType.Admin);
+      const account = await service.createAccountByType(command);
 
       expect(account.admin).toBeInstanceOf(AdminEntity);
       expect(account.student).toBeNull();
     });
 
     it('type이 student인 경우 StudentEntity 계정을 생성한다.', async () => {
-      const account = await service.createAccountByType(studentSignupCommand);
+      const command = AuthFixture.SignupCommand(AccountType.Student);
+      const account = await service.createAccountByType(command);
 
       expect(account.student).toBeInstanceOf(StudentEntity);
       expect(account.admin).toBeNull();
@@ -80,17 +53,43 @@ describe('AuthService', () => {
     it('이메일 계정이 이미 존재하는 경우 AlreadyExistsAccountException을 던진다.', () => {
       jest.spyOn(module.get(AccountRepository), 'hasByEmail').mockResolvedValue(true);
 
-      expect(service.signup(adminSignupCommand)).rejects.toBeInstanceOf(AlreadyExistsAccountException);
+      const command = AuthFixture.SignupCommand(AccountType.Admin);
+      expect(service.signup(command)).rejects.toBeInstanceOf(AlreadyExistsAccountException);
+    });
+
+    it('password와 confirmPassword가 같지 않은 경우 NotSamePasswordsException을 던진다.', () => {
+      jest.spyOn(module.get(AccountRepository), 'hasByEmail').mockResolvedValue(false);
+
+      const command = AuthFixture.SignupCommand(AccountType.Admin, { confirmPassword: 'confirmPassword' });
+      expect(service.signup(command)).rejects.toBeInstanceOf(NotSamePasswordsException);
+    });
+
+    it('회원가입에 성공하면 TokensDto를 반환한다.', () => {
+      const command = AuthFixture.SignupCommand(AccountType.Admin);
+      expect(service.signup(command)).resolves.toBeInstanceOf(TokensDto);
     });
   });
 
-  it('password와 confirmPassword가 같지 않은 경우 NotSamePasswordsException을 던진다.', () => {
-    jest.spyOn(module.get(AccountRepository), 'hasByEmail').mockResolvedValue(false);
+  describe('signin', () => {
+    it('등록된 이메일 계정이 없으면 WrongEmailOrPasswordException을 던진다.', () => {
+      jest.spyOn(module.get(AccountRepository), 'findByEmail').mockResolvedValue(null);
 
-    expect(service.signup({ ...adminSignupCommand, confirmPassword: 'confirmPassword' })).rejects.toBeInstanceOf(NotSamePasswordsException);
-  });
+      const command = AuthFixture.SigninCommand();
+      expect(service.signin(command)).rejects.toBeInstanceOf(WrongEmailOrPasswordException);
+    });
 
-  it('회원가입에 성공하면 TokensDto를 반환한다.', () => {
-    expect(service.signup(adminSignupCommand)).resolves.toBeInstanceOf(TokensDto);
+    it('비밀번호가 틀리면 WrongEmailOrPasswordException을 던진다.', () => {
+      jest.spyOn(module.get(AccountRepository), 'findByEmail').mockResolvedValue(AuthFixture.Admin);
+
+      const command = AuthFixture.SigninCommand({ password: 'wrong password' });
+      expect(service.signin(command)).rejects.toBeInstanceOf(WrongEmailOrPasswordException);
+    });
+
+    it('로그인에 성공하면 TokensDto를 반환한다.', () => {
+      jest.spyOn(module.get(AccountRepository), 'findByEmail').mockResolvedValue(AuthFixture.Admin);
+
+      const command = AuthFixture.SigninCommand();
+      expect(service.signin(command)).resolves.toBeInstanceOf(TokensDto);
+    });
   });
 });

@@ -7,6 +7,20 @@ export class AccountRepository extends AbstractRepository<AccountEntity> {
     return this.existsBy({ email });
   }
 
+  async findByEmail(email: string) {
+    return this.findOne({
+      relations: { admin: true, student: true },
+      select: {
+        id: true,
+        email: true,
+        password: true,
+        admin: { id: true },
+        student: { id: true },
+      },
+      where: { email },
+    });
+  }
+
   async createAccountAsAdmin(name: string, email: string, password: string) {
     return this.transaction(async (em) => {
       const adminRepository = em.getRepository(AdminEntity);
