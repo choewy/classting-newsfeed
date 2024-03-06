@@ -16,6 +16,6 @@
   "testEnvironment": "node",
   "moduleNameMapper": {
     "src/(.*)$": "<rootDir>/src/$1",
-    "^@libs/(.*)$": "<rootDir>/src/libs/$1"
+    "^@core/(.*)$": "<rootDir>/src/core/$1"
   }
 }
