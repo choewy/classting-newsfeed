@@ -1,8 +1,10 @@
+import { ValidationException } from '@common/implements';
 import { WinstonLogger } from '@core/logger';
 import { SwaggerExModule } from '@core/swagger';
 import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
 import { NestFactory, Reflector } from '@nestjs/core';
 
+import { AppFilter } from './app.filter';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
@@ -20,6 +22,9 @@ async function bootstrap() {
         enableImplicitConversion: true,
         enableCircularCheck: true,
       },
+      exceptionFactory(errors) {
+        throw new ValidationException(errors);
+      },
     }),
   );
 
@@ -29,6 +34,8 @@ async function bootstrap() {
       enableCircularCheck: true,
     }),
   );
+
+  app.useGlobalFilters(new AppFilter());
 
   await app.listen(4000);
 }

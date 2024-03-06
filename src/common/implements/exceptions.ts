@@ -1,4 +1,17 @@
 import { BadRequestException, ConflictException, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import { ValidationError } from 'class-validator';
+
+export class ValidationException extends BadRequestException {
+  constructor(errors: ValidationError[]) {
+    super();
+
+    const error = errors.shift();
+
+    if (error) {
+      this.message = Object.values(error.constraints).shift();
+    }
+  }
+}
 
 export class AlreadyExistAccountException extends ConflictException {}
 export class NotSamePasswordsException extends BadRequestException {}
