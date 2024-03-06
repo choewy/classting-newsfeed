@@ -18,7 +18,7 @@ export class TypeOrmConfigService extends AbstractConfigService {
       username: this.MYSQL_USERNAME,
       password: this.MYSQL_PASSWORD,
       database: this.MYSQL_DATABASE,
-      entities: [__dirname + '/dist/**/*.entity.js'],
+      entities: [process.env.PWD + '/dist/**/*.entity.js'],
       synchronize: this.configService.get('NODE_ENV') === 'local',
       logging: ['error', 'warn'],
       autoLoadEntities: true,
