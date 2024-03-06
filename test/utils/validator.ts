@@ -9,7 +9,6 @@ export class Validator {
       enableCircularCheck: true,
     });
 
-    const errors = validateSync(instance, { stopAtFirstError: true });
-    return errors.shift() ?? null;
+    return validateSync(instance, { stopAtFirstError: true }).shift() ?? null;
   }
 }
