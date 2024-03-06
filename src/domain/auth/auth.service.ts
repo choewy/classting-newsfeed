@@ -50,8 +50,6 @@ export class AuthService {
   createTokens(type: AccountType, id: number) {
     const payload = { type, id };
 
-    console.log(payload);
-
     return new TokensDto(
       this.jwtService.sign(payload, this.jwtConfigService.getAccessSignOptions()),
       this.jwtService.sign(payload, this.jwtConfigService.getRefreshSignOptions()),
