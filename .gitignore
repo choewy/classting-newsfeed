@@ -3,6 +3,11 @@
 /node_modules
 /build
 
+# docker
+/docker/**/disk
+/docker/**/lib
+/docker/**/log
+
 # Logs
 logs
 *.log
