@@ -1,10 +1,21 @@
-import { BaseEntity, Column, CreateDateColumn, Entity, JoinTable, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import {
+  BaseEntity,
+  Column,
+  CreateDateColumn,
+  Entity,
+  Index,
+  JoinTable,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 import { AdminEntity } from './admin.entity';
 import { SchoolNewsEntity } from './school-news.entity';
 import { SubscribeEntity } from './subscribe.entity';
 
 @Entity({ name: 'school' })
+@Index('school_idx_name_location', ['name', 'location'])
 export class SchoolEntity extends BaseEntity {
   @PrimaryGeneratedColumn({ type: 'int', unsigned: true })
   readonly id: number;
