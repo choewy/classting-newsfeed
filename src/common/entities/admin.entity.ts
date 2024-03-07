@@ -40,5 +40,9 @@ export class AdminEntity extends BaseEntity {
 
   @OneToMany(() => SchoolNewsEntity, (e) => e.writer, { cascade: true })
   @JoinTable()
-  writtenSchoolNews: SchoolNewsEntity[];
+  createdSchoolNews: SchoolNewsEntity[];
+
+  @OneToMany(() => SchoolNewsEntity, (e) => e.updater, { cascade: true })
+  @JoinTable()
+  updatedSchoolNews: SchoolNewsEntity[];
 }

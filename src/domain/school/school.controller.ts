@@ -3,10 +3,10 @@ import { ReqAdmin, SetAccountType } from '@common/decorators';
 import { AccountGuard } from '@common/guards';
 import { JwtGuard } from '@core/jwt';
 import { Body, Controller, Delete, Param, Patch, Post, UseGuards } from '@nestjs/common';
-import { ApiBearerAuth, ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiCreatedResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 
-import { CreateSchoolCommand, CreateSchoolNewsCommand } from './commands';
-import { SchoolDto } from './dtos';
+import { CreateSchoolCommand, CreateSchoolNewsCommand, UpdateSchoolNewsCommand } from './commands';
+import { SchoolDto, SchoolNewsDto } from './dtos';
 import { GetSchoolNewsQuery } from './queries';
 import { SchoolService } from './school.service';
 
@@ -28,21 +28,23 @@ export class SchoolController {
   @Post('news')
   @ApiBearerAuth()
   @ApiOperation({ summary: '학교 소식 등록' })
+  @ApiCreatedResponse({ type: SchoolNewsDto })
   async createSchoolNews(@ReqAdmin() adminId: number, @Body() command: CreateSchoolNewsCommand) {
     return this.schoolService.createSchoolNews(adminId, command);
   }
 
-  @Patch('news/:id(\\d+)')
+  @Patch('news/:schoolNewsId(\\d+)')
   @ApiBearerAuth()
   @ApiOperation({ summary: '학교 소식 수정' })
-  async updateSchoolNews(@Param() param: GetSchoolNewsQuery) {
-    return this.schoolService.updateSchoolNews(param.id);
+  @ApiOkResponse({ type: SchoolNewsDto })
+  async updateSchoolNews(@ReqAdmin() adminId: number, @Param() param: GetSchoolNewsQuery, @Body() command: UpdateSchoolNewsCommand) {
+    return this.schoolService.updateSchoolNews(adminId, param.schoolNewsId, command);
   }
 
-  @Delete('news/:id(\\d+)')
+  @Delete('news/:schoolNewsId(\\d+)')
   @ApiBearerAuth()
   @ApiOperation({ summary: '학교 소식 삭제' })
-  async deleteSchoolNews(@Param() param: GetSchoolNewsQuery) {
-    return this.schoolService.deleteSchoolNews(param.id);
+  async deleteSchoolNews(@ReqAdmin() adminId: number, @Param() param: GetSchoolNewsQuery) {
+    return this.schoolService.deleteSchoolNews(adminId, param.schoolNewsId);
   }
 }

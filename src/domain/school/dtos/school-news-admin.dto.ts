@@ -1,7 +1,7 @@
 import { AdminEntity } from '@common/entities';
 import { ApiResponseProperty } from '@nestjs/swagger';
 
-export class SchoolNewsWriterDto {
+export class SchoolNewsAdminDto {
   @ApiResponseProperty({ type: Number })
   id: number;
 

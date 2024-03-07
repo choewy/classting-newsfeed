@@ -1,5 +1,5 @@
 import { AdminEntity, SchoolEntity, SchoolNewsEntity } from '@common/entities';
-import { CreateSchoolCommand, CreateSchoolNewsCommand } from '@domain/school/commands';
+import { CreateSchoolCommand, CreateSchoolNewsCommand, UpdateSchoolNewsCommand } from '@domain/school/commands';
 import { plainToInstance } from 'class-transformer';
 import { DeepPartial } from 'typeorm';
 
@@ -36,8 +36,9 @@ export class SchoolFixture {
         id: 1,
         title: 'school news',
         contents: 'school news contents',
-        writer: this.Admin(),
         school: this.School(),
+        writer: this.Admin(),
+        updater: null,
         ...replaceVelues,
       },
       { enableCircularCheck: true, enableImplicitConversion: true },
@@ -62,6 +63,18 @@ export class SchoolFixture {
       {
         title: 'school news',
         contents: 'school news contents',
+        ...replaceValues,
+      },
+      { enableCircularCheck: true, enableImplicitConversion: true },
+    );
+  }
+
+  static UpdateSchoolNewsCommand(replaceValues?: Partial<UpdateSchoolNewsCommand>) {
+    return plainToInstance(
+      CreateSchoolNewsCommand,
+      {
+        title: 'school news(updated)',
+        contents: 'school news contents(updated)',
         ...replaceValues,
       },
       { enableCircularCheck: true, enableImplicitConversion: true },

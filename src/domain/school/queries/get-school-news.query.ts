@@ -4,5 +4,5 @@ import { IsNumberString } from 'class-validator';
 export class GetSchoolNewsQuery {
   @ApiProperty({ type: BigInt })
   @IsNumberString()
-  id: bigint;
+  schoolNewsId: bigint;
 }

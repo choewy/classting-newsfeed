@@ -1,4 +1,10 @@
-import { AlreadyExistSchoolException, AlreadyHasSchoolException, RequriedSchoolExistException } from '@common/implements';
+import {
+  AlreadyExistSchoolException,
+  AlreadyHasSchoolException,
+  CannotAccessShoolNewsException,
+  NotFoundSchoolNewsException,
+  RequriedSchoolExistException,
+} from '@common/implements';
 import { AdminRepository, SchoolNewsRepository, SchoolRepository } from '@common/repositories';
 import { SchoolDto, SchoolNewsDto } from '@domain/school/dtos';
 import { SchoolService } from '@domain/school/school.service';
@@ -66,13 +72,60 @@ describe('SchoolService', () => {
       expect(service.createSchoolNews(1, command)).rejects.toBeInstanceOf(RequriedSchoolExistException);
     });
 
-    it('학교 소식이 생성되면 SchoolNewsDto를 반환한다.', () => {
+    it('학교 소식 생성이 완료되면 SchoolNewsDto를 반환한다.', () => {
       jest.spyOn(module.get(AdminRepository), 'findByIdWithSchool').mockResolvedValue(SchoolFixture.Admin({ school: { id: 1 } }));
       jest.spyOn(module.get(SchoolNewsRepository), 'createSchoolNews').mockResolvedValue(SchoolFixture.SchoolNews());
 
       const command = SchoolFixture.CreateSchoolNewsCommand();
 
       expect(service.createSchoolNews(1, command)).resolves.toBeInstanceOf(SchoolNewsDto);
+    });
+  });
+
+  describe('updateSchoolNews', () => {
+    it('관리자가 학교를 생성하지 않은 경우 RequriedSchoolExistException을 던진다.', () => {
+      jest.spyOn(module.get(AdminRepository), 'findByIdWithSchool').mockResolvedValue(SchoolFixture.Admin({ school: null }));
+
+      const command = SchoolFixture.UpdateSchoolNewsCommand();
+
+      expect(service.updateSchoolNews(1, BigInt(1), command)).rejects.toBeInstanceOf(RequriedSchoolExistException);
+    });
+
+    it('학교 소식이 존재하지 않으면 NotFoundSchoolNewsException을 던진다.', () => {
+      jest.spyOn(module.get(AdminRepository), 'findByIdWithSchool').mockResolvedValue(SchoolFixture.Admin({ school: { id: 1 } }));
+      jest.spyOn(module.get(SchoolNewsRepository), 'findByIdSchoolAndAdmins').mockResolvedValue(null);
+
+      const command = SchoolFixture.UpdateSchoolNewsCommand();
+
+      expect(service.updateSchoolNews(1, BigInt(1), command)).rejects.toBeInstanceOf(NotFoundSchoolNewsException);
+    });
+
+    it('관리자가 다른 학교의 뉴스를 수정하려는 경우 CannotAccessShoolNewsException을 던진다.', () => {
+      jest.spyOn(module.get(AdminRepository), 'findByIdWithSchool').mockResolvedValue(SchoolFixture.Admin({ school: { id: 1 } }));
+      jest
+        .spyOn(module.get(SchoolNewsRepository), 'findByIdSchoolAndAdmins')
+        .mockResolvedValue(SchoolFixture.SchoolNews({ school: { id: 2 } }));
+
+      const command = SchoolFixture.UpdateSchoolNewsCommand();
+
+      expect(service.updateSchoolNews(1, BigInt(1), command)).rejects.toBeInstanceOf(CannotAccessShoolNewsException);
+    });
+
+    it('학교 소식 수정이 완료되면 SchoolNewsDto를 반환한다.', () => {
+      const writer = SchoolFixture.Admin({ id: 1, school: { id: 1 } });
+      const updater = SchoolFixture.Admin({ id: 2, school: { id: 1 } });
+
+      jest.spyOn(module.get(AdminRepository), 'findByIdWithSchool').mockResolvedValue(updater);
+      jest
+        .spyOn(module.get(SchoolNewsRepository), 'findByIdSchoolAndAdmins')
+        .mockResolvedValue(SchoolFixture.SchoolNews({ school: { id: 1 }, writer }));
+      jest
+        .spyOn(module.get(SchoolNewsRepository), 'updateSchoolNews')
+        .mockResolvedValue(SchoolFixture.SchoolNews({ school: { id: 1 }, writer, updater }));
+
+      const command = SchoolFixture.UpdateSchoolNewsCommand();
+
+      expect(service.updateSchoolNews(1, BigInt(1), command)).resolves.toBeInstanceOf(SchoolNewsDto);
     });
   });
 });

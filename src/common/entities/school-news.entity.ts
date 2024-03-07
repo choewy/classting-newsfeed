@@ -24,7 +24,11 @@ export class SchoolNewsEntity extends BaseEntity {
   @JoinColumn()
   school: SchoolEntity;
 
-  @ManyToOne(() => AdminEntity, (e) => e.writtenSchoolNews, { onDelete: 'CASCADE' })
+  @ManyToOne(() => AdminEntity, (e) => e.createdSchoolNews, { onDelete: 'CASCADE' })
   @JoinColumn()
   writer: AdminEntity;
+
+  @ManyToOne(() => AdminEntity, (e) => e.updatedSchoolNews, { onDelete: 'CASCADE', nullable: true })
+  @JoinColumn()
+  updater: AdminEntity | null;
 }
