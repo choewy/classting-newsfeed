@@ -4,6 +4,7 @@ import { SwaggerModule } from '@nestjs/swagger';
 
 import { AppFilter } from './app.filter';
 import { AppInterceptor } from './app.interceptor';
+import { ValidationFailException } from './exceptions';
 import { CreateBootstrapOptions } from './interfaces';
 
 export const createBootstrap = async (AppModule: any, options?: CreateBootstrapOptions) => {
@@ -22,7 +23,8 @@ export const createBootstrap = async (AppModule: any, options?: CreateBootstrapO
         enableCircularCheck: true,
       },
       exceptionFactory(errors) {
-        throw errors.shift();
+        const message = Object.values(errors.shift().constraints).shift();
+        throw new ValidationFailException(message);
       },
     }),
   );

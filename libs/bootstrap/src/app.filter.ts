@@ -25,19 +25,32 @@ export class AppFilter extends BaseExceptionFilter {
     let exception = e as HttpException;
 
     if (e instanceof HttpException === false) {
-      exception = new InternalServerErrorException(e);
+      exception = new InternalServerErrorException();
+      exception.cause = { name: e.name, message: e.message };
+
       log.status = 500;
       log.message = exception.name;
-      log.error = e;
       log.exception = exception;
+      log.error = {
+        name: e.name,
+        message: e.message,
+        stack: e.stack,
+      };
+
       Logger.error(log);
     } else {
       log.status = e.getStatus();
       log.message = exception.name;
       log.exception = e;
+
       Logger.warn(log);
     }
 
-    host.switchToHttp().getResponse<Response>().status(exception.getStatus()).send(exception.getResponse());
+    host.switchToHttp().getResponse<Response>().status(exception.getStatus()).send({
+      name: exception.name,
+      message: exception.message,
+      statusCode: exception.getStatus(),
+      error: exception.cause,
+    });
   }
 }

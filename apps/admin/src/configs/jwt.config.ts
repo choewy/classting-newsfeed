@@ -16,6 +16,10 @@ export const JwtConfig = registerAs(
         audience: 'admin',
         expiresIn: '1h',
       },
+      verifyOptions: {
+        subject: 'access',
+        audience: 'admin',
+      },
     },
     refresh: {
       secret: process.env.JWT_ADMIN_REFRESH_SECRET,
@@ -23,6 +27,10 @@ export const JwtConfig = registerAs(
         subject: 'refresh',
         audience: 'admin',
         expiresIn: '14d',
+      },
+      verifyOptions: {
+        subject: 'refresh',
+        audience: 'admin',
       },
     },
   }),
