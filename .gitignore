@@ -3,11 +3,9 @@
 /node_modules
 /build
 /temp
-
-# docker
-/docker/**/disk
-/docker/**/lib
-/docker/**/log
+/docker/mysql/lib
+/docker/mysql/log
+/docker/mysql/disk
 
 # Logs
 logs

@@ -19,12 +19,12 @@
     "noFallthroughCasesInSwitch": false,
     "esModuleInterop": true,
     "paths": {
-      "@utils/*": ["test/utils/*"],
-      "@core/*": ["src/core/*"],
-      "@config/*": ["src/config/*"],
-      "@common/*": ["src/common/*"],
-      "@admin/*": ["src/admin/*"],
-      "@domain/*": ["src/domain/*"]
+      "@libs/typeorm": ["libs/typeorm/src"],
+      "@libs/typeorm/*": ["@libs/typeorm/src/*"],
+      "@libs/health": ["libs/health/src"],
+      "@libs/health/*": ["libs/health/src/*"],
+      "@libs/logger": ["libs/logger/src"],
+      "@libs/logger/*": ["libs/logger/src/*"]
     }
   }
 }
