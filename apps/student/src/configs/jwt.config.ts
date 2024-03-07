@@ -16,6 +16,10 @@ export const JwtConfig = registerAs(
         audience: 'student',
         expiresIn: '1h',
       },
+      verifyOptions: {
+        subject: 'access',
+        audience: 'student',
+      },
     },
     refresh: {
       secret: process.env.JWT_STUDENT_REFRESH_SECRET,
@@ -23,6 +27,10 @@ export const JwtConfig = registerAs(
         subject: 'refresh',
         audience: 'student',
         expiresIn: '14d',
+      },
+      verifyOptions: {
+        subject: 'refresh',
+        audience: 'student',
       },
     },
   }),
