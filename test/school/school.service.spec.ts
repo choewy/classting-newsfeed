@@ -1,6 +1,6 @@
-import { AlreadyExistSchoolException, AlreadyHasSchoolException } from '@common/implements';
-import { AdminRepository, SchoolRepository } from '@common/repositories';
-import { SchoolDto } from '@domain/school/dtos';
+import { AlreadyExistSchoolException, AlreadyHasSchoolException, RequriedSchoolExistException } from '@common/implements';
+import { AdminRepository, SchoolNewsRepository, SchoolRepository } from '@common/repositories';
+import { SchoolDto, SchoolNewsDto } from '@domain/school/dtos';
 import { SchoolService } from '@domain/school/school.service';
 import { Test, TestingModule } from '@nestjs/testing';
 import { Mock } from '@utils/mock';
@@ -13,7 +13,12 @@ describe('SchoolService', () => {
 
   beforeAll(async () => {
     module = await Test.createTestingModule({
-      providers: [Mock.Repository(AdminRepository), Mock.Repository(SchoolRepository), SchoolService],
+      providers: [
+        Mock.Repository(AdminRepository),
+        Mock.Repository(SchoolRepository),
+        Mock.Repository(SchoolNewsRepository),
+        SchoolService,
+      ],
     }).compile();
 
     service = module.get(SchoolService);
@@ -24,7 +29,7 @@ describe('SchoolService', () => {
   });
 
   describe('createSchool', () => {
-    it('이미 학교 페이지를 생성한 경우 AlreadyHasSchoolException를 던진다.', () => {
+    it('관리자가 이미 학교 페이지를 생성한 경우 AlreadyHasSchoolException를 던진다.', () => {
       jest.spyOn(module.get(AdminRepository), 'findByIdWithSchool').mockResolvedValue(SchoolFixture.Admin({ school: { id: 1 } }));
 
       const command = SchoolFixture.CreateSchoolCommand();
@@ -49,6 +54,25 @@ describe('SchoolService', () => {
       const command = SchoolFixture.CreateSchoolCommand();
 
       expect(service.createSchool(1, command)).resolves.toBeInstanceOf(SchoolDto);
+    });
+  });
+
+  describe('createSchoolNews', () => {
+    it('관리자가 학교를 생성하지 않은 경우 RequriedSchoolExistException을 던진다.', () => {
+      jest.spyOn(module.get(AdminRepository), 'findByIdWithSchool').mockResolvedValue(SchoolFixture.Admin({ school: null }));
+
+      const command = SchoolFixture.CreateSchoolNewsCommand();
+
+      expect(service.createSchoolNews(1, command)).rejects.toBeInstanceOf(RequriedSchoolExistException);
+    });
+
+    it('학교 소식이 생성되면 SchoolNewsDto를 반환한다.', () => {
+      jest.spyOn(module.get(AdminRepository), 'findByIdWithSchool').mockResolvedValue(SchoolFixture.Admin({ school: { id: 1 } }));
+      jest.spyOn(module.get(SchoolNewsRepository), 'createSchoolNews').mockResolvedValue(SchoolFixture.SchoolNews());
+
+      const command = SchoolFixture.CreateSchoolNewsCommand();
+
+      expect(service.createSchoolNews(1, command)).resolves.toBeInstanceOf(SchoolNewsDto);
     });
   });
 });

@@ -19,3 +19,4 @@ export class WrongEmailOrPasswordException extends UnauthorizedException {}
 export class AlreadyHasSchoolException extends ConflictException {}
 export class AlreadyExistSchoolException extends ConflictException {}
 export class NotFoundSchoolNewsException extends NotFoundException {}
+export class RequriedSchoolExistException extends NotFoundException {}

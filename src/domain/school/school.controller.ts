@@ -5,7 +5,7 @@ import { JwtGuard } from '@core/jwt';
 import { Body, Controller, Delete, Param, Patch, Post, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 
-import { CreateSchoolCommand } from './commands';
+import { CreateSchoolCommand, CreateSchoolNewsCommand } from './commands';
 import { SchoolDto } from './dtos';
 import { GetSchoolNewsQuery } from './queries';
 import { SchoolService } from './school.service';
@@ -28,8 +28,8 @@ export class SchoolController {
   @Post('news')
   @ApiBearerAuth()
   @ApiOperation({ summary: '학교 소식 등록' })
-  async createSchoolNews() {
-    return this.schoolService.createSchoolNews();
+  async createSchoolNews(@ReqAdmin() adminId: number, @Body() command: CreateSchoolNewsCommand) {
+    return this.schoolService.createSchoolNews(adminId, command);
   }
 
   @Patch('news/:id(\\d+)')

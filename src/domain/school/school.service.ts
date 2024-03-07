@@ -1,13 +1,17 @@
-import { AlreadyExistSchoolException, AlreadyHasSchoolException } from '@common/implements';
-import { AdminRepository, SchoolRepository } from '@common/repositories';
+import { AlreadyExistSchoolException, AlreadyHasSchoolException, RequriedSchoolExistException } from '@common/implements';
+import { AdminRepository, SchoolNewsRepository, SchoolRepository } from '@common/repositories';
 import { Injectable } from '@nestjs/common';
 
-import { CreateSchoolCommand } from './commands';
-import { SchoolDto } from './dtos';
+import { CreateSchoolCommand, CreateSchoolNewsCommand } from './commands';
+import { SchoolDto, SchoolNewsDto } from './dtos';
 
 @Injectable()
 export class SchoolService {
-  constructor(private readonly adminRepository: AdminRepository, private readonly schoolRepository: SchoolRepository) {}
+  constructor(
+    private readonly adminRepository: AdminRepository,
+    private readonly schoolRepository: SchoolRepository,
+    private readonly schoolNewsRepository: SchoolNewsRepository,
+  ) {}
 
   async createSchool(adminId: number, command: CreateSchoolCommand) {
     const admin = await this.adminRepository.findByIdWithSchool(adminId);
@@ -28,8 +32,19 @@ export class SchoolService {
     return new SchoolDto(school);
   }
 
-  async createSchoolNews() {
-    return;
+  async createSchoolNews(adminId: number, command: CreateSchoolNewsCommand) {
+    const admin = await this.adminRepository.findByIdWithSchool(adminId);
+
+    if (admin.school === null) {
+      throw new RequriedSchoolExistException();
+    }
+
+    const schoolNews = await this.schoolNewsRepository.createSchoolNews(admin, {
+      title: command.title,
+      contents: command.contents,
+    });
+
+    return new SchoolNewsDto(schoolNews);
   }
 
   async updateSchoolNews(id: bigint) {
