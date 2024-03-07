@@ -3,8 +3,16 @@ import { AbstractRepository, InjectableRepository } from '@core/typeorm';
 
 @InjectableRepository(SchoolEntity)
 export class SchoolRepository extends AbstractRepository<SchoolEntity> {
+  async existsById(id: number) {
+    return this.existsBy({ id });
+  }
+
   async existsByNameAndLocation(name: string, location: string) {
     return this.existsBy({ name, location });
+  }
+
+  async findById(id: number) {
+    return this.findOneBy({ id });
   }
 
   async createSchool(admin: AdminEntity, properties: Pick<SchoolEntity, 'name' | 'location'>) {

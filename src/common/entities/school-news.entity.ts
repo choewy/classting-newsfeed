@@ -1,7 +1,18 @@
-import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import {
+  BaseEntity,
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  ManyToOne,
+  OneToMany,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 import { AdminEntity } from './admin.entity';
 import { SchoolEntity } from './school.entity';
+import { SubscribeEntity } from './subscribe.entity';
 
 @Entity({ name: 'school_news' })
 export class SchoolNewsEntity extends BaseEntity {
@@ -31,4 +42,8 @@ export class SchoolNewsEntity extends BaseEntity {
   @ManyToOne(() => AdminEntity, (e) => e.updatedSchoolNews, { onDelete: 'CASCADE', nullable: true })
   @JoinColumn()
   updater: AdminEntity | null;
+
+  @OneToMany(() => SubscribeEntity, (e) => e.lastSchoolNews, { cascade: true })
+  @JoinColumn()
+  subscriber: SubscribeEntity;
 }

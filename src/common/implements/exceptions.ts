@@ -21,3 +21,5 @@ export class AlreadyExistSchoolException extends ConflictException {}
 export class NotFoundSchoolNewsException extends NotFoundException {}
 export class RequriedSchoolExistException extends NotFoundException {}
 export class CannotAccessShoolNewsException extends ForbiddenException {}
+export class NotFoundStudentException extends NotFoundException {}
+export class NotFoundSchoolException extends NotFoundException {}
