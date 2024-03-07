@@ -12,6 +12,9 @@ export class SubscribedSchoolPageDto {
   @ApiProperty({ type: String })
   location: string;
 
+  @ApiProperty({ type: Number })
+  subscribers: number;
+
   @ApiProperty({ type: Date })
   subscribedAt: Date;
 
@@ -22,6 +25,7 @@ export class SubscribedSchoolPageDto {
     this.id = subscription.schoolPage.id;
     this.name = subscription.schoolPage.name;
     this.location = subscription.schoolPage.location;
+    this.subscribers = subscription.schoolPage.schoolPageCount?.subscribers ?? 0;
     this.subscribedAt = subscription.subscribedAt;
     this.subscriptionDays = -Math.floor(DateTime.fromJSDate(new Date(subscription.subscribedAt)).diffNow('days').get('days'));
   }

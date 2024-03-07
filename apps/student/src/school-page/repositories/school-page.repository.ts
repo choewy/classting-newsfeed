@@ -11,7 +11,7 @@ export class SchoolPageRepository extends AbstractRepository<SchoolPageEntity> {
         'schoolPage.subscription',
         'schoolPage.subscriptions',
         'sub',
-        'sub.studentId = :studentId AND sub.schoolPageId = schoolPage.id AND sub.subscription = TRUE',
+        'sub.studentId = :studentId AND sub.schoolPageId = schoolPage.id AND sub.status = TRUE',
         { studentId },
       );
     }

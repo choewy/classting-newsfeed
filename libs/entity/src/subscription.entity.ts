@@ -12,7 +12,7 @@ export class SubscriptionEntity extends BaseEntity {
   schoolPageId: number;
 
   @Column({ type: 'boolean' })
-  subscription: boolean;
+  status: boolean;
 
   @Column({ type: 'datetime', default: null })
   unsubscribedAt: Date | null;
