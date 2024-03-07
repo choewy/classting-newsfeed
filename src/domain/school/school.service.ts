@@ -39,13 +39,13 @@ export class SchoolService {
   }
 
   async createSchoolNews(adminId: number, command: CreateSchoolNewsCommand) {
-    const admin = await this.adminRepository.findByIdWithSchool(adminId);
+    const writer = await this.adminRepository.findByIdWithSchool(adminId);
 
-    if (admin.school === null) {
+    if (writer.school === null) {
       throw new RequriedSchoolExistException();
     }
 
-    const schoolNews = await this.schoolNewsRepository.createSchoolNews(admin, {
+    const schoolNews = await this.schoolNewsRepository.createSchoolNews(writer, {
       title: command.title,
       contents: command.contents,
     });
@@ -54,9 +54,9 @@ export class SchoolService {
   }
 
   async updateSchoolNews(adminId: number, schoolNewsId: bigint, command: UpdateSchoolNewsCommand) {
-    const admin = await this.adminRepository.findByIdWithSchool(adminId);
+    const updater = await this.adminRepository.findByIdWithSchool(adminId);
 
-    if (admin.school === null) {
+    if (updater.school === null) {
       throw new RequriedSchoolExistException();
     }
 
@@ -66,11 +66,11 @@ export class SchoolService {
       throw new NotFoundSchoolNewsException();
     }
 
-    if (schoolNews.school.id !== admin.school.id) {
+    if (schoolNews.school.id !== updater.school.id) {
       throw new CannotAccessShoolNewsException();
     }
 
-    const updatedSchoolNews = await this.schoolNewsRepository.updateSchoolNews(admin, schoolNews, {
+    const updatedSchoolNews = await this.schoolNewsRepository.updateSchoolNews(updater, schoolNews, {
       title: command.title,
       contents: command.contents,
     });

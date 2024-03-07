@@ -112,16 +112,17 @@ describe('SchoolService', () => {
     });
 
     it('학교 소식 수정이 완료되면 SchoolNewsDto를 반환한다.', () => {
-      const writer = SchoolFixture.Admin({ id: 1, school: { id: 1 } });
-      const updater = SchoolFixture.Admin({ id: 2, school: { id: 1 } });
+      const school = SchoolFixture.School({ id: 1 });
+      const writer = SchoolFixture.Admin({ id: 1, school });
+      const updater = SchoolFixture.Admin({ id: 2, school });
 
       jest.spyOn(module.get(AdminRepository), 'findByIdWithSchool').mockResolvedValue(updater);
       jest
         .spyOn(module.get(SchoolNewsRepository), 'findByIdSchoolAndAdmins')
-        .mockResolvedValue(SchoolFixture.SchoolNews({ school: { id: 1 }, writer }));
+        .mockResolvedValue(SchoolFixture.SchoolNews({ school, writer }));
       jest
         .spyOn(module.get(SchoolNewsRepository), 'updateSchoolNews')
-        .mockResolvedValue(SchoolFixture.SchoolNews({ school: { id: 1 }, writer, updater }));
+        .mockResolvedValue(SchoolFixture.SchoolNews({ school, writer, updater }));
 
       const command = SchoolFixture.UpdateSchoolNewsCommand();
 
