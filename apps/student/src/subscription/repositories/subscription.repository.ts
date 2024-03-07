@@ -3,6 +3,10 @@ import { AbstractRepository, InjectableRepository } from '@libs/typeorm';
 
 @InjectableRepository(SubscriptionEntity)
 export class SubscriptionRepository extends AbstractRepository<SubscriptionEntity> {
+  async existsByStudentAndSchoolPage(studentId: number, schoolPageId: number) {
+    return this.existsBy({ studentId, schoolPageId, status: true });
+  }
+
   async findManyAndCount(studentId: number, skip: number, take: number) {
     return this.findAndCount({
       relations: { schoolPage: true },

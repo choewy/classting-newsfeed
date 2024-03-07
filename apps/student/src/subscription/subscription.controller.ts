@@ -2,8 +2,11 @@ import { Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Query, UseG
 import { ApiBearerAuth, ApiCreatedResponse, ApiNoContentResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 import { SubscribeSchoolPageCommand } from './commands/subscribe-school-page.command';
+import { SubscribedSchoolNewsListDto } from './dtos/subscribed-school-news-list.dto';
 import { SubscribedSchoolPageListDto } from './dtos/subscribed-school-page-list.dto';
-import { GetSubscribiedSchoolPageListQuery } from './queries/get-subscribed-school-page-list.query';
+import { GetSubscribedSchoolNewsListQuery } from './queries/get-subscribed-school-news-list.query';
+import { GetSubscribedSchoolNewsQuery } from './queries/get-subscribed-school-news.query';
+import { GetSubscribedSchoolPageListQuery } from './queries/get-subscribed-school-page-list.query';
 import { SubscriptionService } from './subscription.service';
 import { ReqUser } from '../auth/decorators/req-user';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
@@ -18,8 +21,20 @@ export class SubscriptionController {
   @ApiBearerAuth()
   @ApiOperation({ summary: '구독 중인 학교 페이지 목록 조회' })
   @ApiOkResponse({ type: SubscribedSchoolPageListDto })
-  async getSubscribedSchoolPageList(@ReqUser() studentId: number, @Query() query: GetSubscribiedSchoolPageListQuery) {
+  async getSubscribedSchoolPageList(@ReqUser() studentId: number, @Query() query: GetSubscribedSchoolPageListQuery) {
     return this.subscriptionService.getSubscribedSchoolPageList(studentId, query);
+  }
+
+  @Get(':id(\\d+)')
+  @ApiBearerAuth()
+  @ApiOperation({ summary: '구독 중인 학교 페이지 소식 목록 조회' })
+  @ApiOkResponse({ type: SubscribedSchoolNewsListDto })
+  async getSubscribedSchoolNewsList(
+    @ReqUser() studentId: number,
+    @Param() param: GetSubscribedSchoolNewsQuery,
+    @Query() query: GetSubscribedSchoolNewsListQuery,
+  ) {
+    return this.subscriptionService.getSubscribedSchoolNewsList(studentId, param.id, query);
   }
 
   @Post(':id(\\d+)')
