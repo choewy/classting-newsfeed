@@ -48,4 +48,7 @@ export class SchoolPageEntity extends BaseEntity {
   @OneToMany(() => SubscriptionEntity, (e) => e.schoolPage, { cascade: ['remove'] })
   @JoinTable()
   subscriptions: SubscriptionEntity[];
+
+  @JoinTable()
+  subscription: SubscriptionEntity | null;
 }
