@@ -1,6 +1,5 @@
-import { AdminEntity } from '@common/entities';
 import { AlreadyExistSchoolException, AlreadyHasSchoolException } from '@common/implements';
-import { SchoolRepository } from '@common/repositories';
+import { AdminRepository, SchoolRepository } from '@common/repositories';
 import { Injectable } from '@nestjs/common';
 
 import { CreateSchoolCommand } from './commands';
@@ -8,9 +7,11 @@ import { SchoolDto } from './dtos';
 
 @Injectable()
 export class SchoolService {
-  constructor(private readonly schoolRepository: SchoolRepository) {}
+  constructor(private readonly adminRepository: AdminRepository, private readonly schoolRepository: SchoolRepository) {}
 
-  async createSchool(admin: AdminEntity, command: CreateSchoolCommand) {
+  async createSchool(adminId: number, command: CreateSchoolCommand) {
+    const admin = await this.adminRepository.findByIdWithSchool(adminId);
+
     if (admin.school) {
       throw new AlreadyHasSchoolException();
     }

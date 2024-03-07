@@ -1,1 +1,2 @@
-export * from './only-account-type';
+export * from './set-account-type';
+export * from './req-admin';

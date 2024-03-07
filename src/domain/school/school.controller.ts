@@ -1,7 +1,8 @@
-import { AdminEntity } from '@common/entities';
-import { OnlyAdminGuard } from '@common/guards';
-import { AdminInterceptor, ReqAdmin } from '@domain/admin';
-import { Body, Controller, Delete, Param, Patch, Post, UseInterceptors } from '@nestjs/common';
+import { AccountType } from '@common/constants';
+import { ReqAdmin, SetAccountType } from '@common/decorators';
+import { AccountGuard } from '@common/guards';
+import { JwtGuard } from '@core/jwt';
+import { Body, Controller, Delete, Param, Patch, Post, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 import { CreateSchoolCommand } from './commands';
@@ -11,8 +12,8 @@ import { SchoolService } from './school.service';
 
 @ApiTags('학교')
 @Controller('school')
-@OnlyAdminGuard()
-@UseInterceptors(AdminInterceptor)
+@SetAccountType(AccountType.Admin)
+@UseGuards(JwtGuard, AccountGuard)
 export class SchoolController {
   constructor(private readonly schoolService: SchoolService) {}
 
@@ -20,8 +21,8 @@ export class SchoolController {
   @ApiBearerAuth()
   @ApiOperation({ summary: '학교 페이지 생성' })
   @ApiCreatedResponse({ type: SchoolDto })
-  async createSchool(@ReqAdmin() admin: AdminEntity, @Body() command: CreateSchoolCommand) {
-    return this.schoolService.createSchool(admin, command);
+  async createSchool(@ReqAdmin() adminId: number, @Body() command: CreateSchoolCommand) {
+    return this.schoolService.createSchool(adminId, command);
   }
 
   @Post('news')
