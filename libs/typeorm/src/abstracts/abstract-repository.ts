@@ -1,6 +1,6 @@
 import { DataSource, EntityTarget, ObjectLiteral, Repository } from 'typeorm';
 
-export abstract class AbstractRepository<E extends ObjectLiteral> extends Repository<E> {
+export class AbstractRepository<E extends ObjectLiteral> extends Repository<E> {
   constructor(readonly target: EntityTarget<E>, readonly dataSource: DataSource) {
     super(target, dataSource?.createEntityManager());
   }

@@ -36,7 +36,7 @@ export class SchoolPageEntity extends BaseEntity {
   @JoinColumn()
   admin: AdminEntity;
 
-  @OneToOne(() => SchoolPageCountEntity, (e) => e.schoolPage, { cascade: ['insert', 'remove'] })
+  @OneToOne(() => SchoolPageCountEntity, (e) => e.schoolPage, { cascade: ['insert', 'remove'], eager: true })
   @JoinTable()
   schoolPageCount: SchoolPageCountEntity;
 

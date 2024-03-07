@@ -1,4 +1,4 @@
-import { BaseEntity, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
 import { SchoolPageEntity } from './school-page.entity';
 
@@ -6,6 +6,9 @@ import { SchoolPageEntity } from './school-page.entity';
 export class SchoolPageCountEntity extends BaseEntity {
   @PrimaryGeneratedColumn({ type: 'int', unsigned: true })
   readonly id: number;
+
+  @Column({ type: 'int', unsigned: true, default: 0 })
+  subscribers: number;
 
   @OneToOne(() => SchoolPageEntity, (e) => e.schoolPageCount, { onDelete: 'CASCADE' })
   @JoinColumn()
