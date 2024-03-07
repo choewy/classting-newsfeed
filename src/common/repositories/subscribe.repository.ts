@@ -1,4 +1,4 @@
-import { SchoolNewsEntity, SchoolStorageEntity, SubscribeEntity } from '@common/entities';
+import { SchoolNewsEntity, SchoolCountEntity, SubscribeEntity } from '@common/entities';
 import { AbstractRepository, InjectableRepository } from '@core/typeorm';
 import { MoreThan } from 'typeorm';
 
@@ -38,7 +38,7 @@ export class SubscribeRepository extends AbstractRepository<SubscribeEntity> {
       );
 
       await em
-        .getRepository(SchoolStorageEntity)
+        .getRepository(SchoolCountEntity)
         .createQueryBuilder()
         .update()
         .set({ subscribers: () => 'subscribers + 1' })
@@ -70,7 +70,7 @@ export class SubscribeRepository extends AbstractRepository<SubscribeEntity> {
       );
 
       await em
-        .getRepository(SchoolStorageEntity)
+        .getRepository(SchoolCountEntity)
         .createQueryBuilder()
         .update()
         .set({ subscribers: () => 'IF(subscribers = 0, 0, subscribers - 1)' })

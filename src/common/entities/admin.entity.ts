@@ -5,7 +5,6 @@ import {
   Entity,
   JoinColumn,
   JoinTable,
-  ManyToOne,
   OneToMany,
   OneToOne,
   PrimaryGeneratedColumn,
@@ -30,12 +29,12 @@ export class AdminEntity extends BaseEntity {
   @UpdateDateColumn()
   readonly updatedAt: Date;
 
-  @OneToOne(() => AccountEntity, (e) => e.admin, { cascade: true })
-  @JoinTable()
+  @OneToOne(() => AccountEntity, (e) => e.admin, { onDelete: 'CASCADE' })
+  @JoinColumn()
   account: AccountEntity;
 
-  @ManyToOne(() => SchoolEntity, (e) => e.admins, { onDelete: 'SET NULL', nullable: true })
-  @JoinColumn()
+  @OneToOne(() => SchoolEntity, (e) => e.admin, { cascade: true, nullable: true })
+  @JoinTable()
   school: SchoolEntity | null;
 
   @OneToMany(() => SchoolNewsEntity, (e) => e.writer, { cascade: true })

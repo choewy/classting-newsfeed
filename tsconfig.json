@@ -23,6 +23,7 @@
       "@core/*": ["src/core/*"],
       "@config/*": ["src/config/*"],
       "@common/*": ["src/common/*"],
+      "@admin/*": ["src/admin/*"],
       "@domain/*": ["src/domain/*"]
     }
   }

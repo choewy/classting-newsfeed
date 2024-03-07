@@ -4,6 +4,7 @@ import { JwtExModule } from '@core/jwt';
 import { TypeOrmExModule } from '@core/typeorm';
 import { Module } from '@nestjs/common';
 
+import { AdminModule } from './admin';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { JwtConfigService, TypeOrmConfigService } from './config';
@@ -26,6 +27,7 @@ import { DomainModule } from './domain';
     }),
     HealthExModule,
     DomainModule,
+    AdminModule,
   ],
   controllers: [AppController],
   providers: [AppService],

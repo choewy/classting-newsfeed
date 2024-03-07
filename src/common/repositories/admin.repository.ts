@@ -9,4 +9,11 @@ export class AdminRepository extends AbstractRepository<AdminEntity> {
       where: { id },
     });
   }
+
+  async findOneById(id: number) {
+    return this.findOne({
+      relations: { school: true },
+      where: { id },
+    });
+  }
 }

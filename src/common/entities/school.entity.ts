@@ -4,6 +4,7 @@ import {
   CreateDateColumn,
   Entity,
   Index,
+  JoinColumn,
   JoinTable,
   OneToMany,
   OneToOne,
@@ -13,7 +14,7 @@ import {
 
 import { AdminEntity } from './admin.entity';
 import { SchoolNewsEntity } from './school-news.entity';
-import { SchoolStorageEntity } from './school-storage.entity';
+import { SchoolCountEntity } from './school-storage.entity';
 import { SubscribeEntity } from './subscribe.entity';
 
 @Entity({ name: 'school' })
@@ -34,13 +35,13 @@ export class SchoolEntity extends BaseEntity {
   @UpdateDateColumn()
   readonly updatedAt: Date;
 
-  @OneToOne(() => SchoolStorageEntity, (e) => e.school, { cascade: true, eager: true })
+  @OneToOne(() => SchoolCountEntity, (e) => e.school, { cascade: true, eager: true })
   @JoinTable()
-  schoolStorage: SchoolStorageEntity;
+  count: SchoolCountEntity;
 
-  @OneToMany(() => AdminEntity, (e) => e.school, { cascade: true })
-  @JoinTable()
-  admins: AdminEntity[];
+  @OneToOne(() => AdminEntity, (e) => e.school, { onDelete: 'CASCADE' })
+  @JoinColumn()
+  admin: AdminEntity;
 
   @OneToMany(() => SchoolNewsEntity, (e) => e.school, { cascade: true })
   @JoinTable()

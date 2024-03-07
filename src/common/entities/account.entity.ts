@@ -1,4 +1,14 @@
-import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, OneToOne, PrimaryGeneratedColumn, UpdateDateColumn } from 'typeorm';
+import {
+  BaseEntity,
+  Column,
+  CreateDateColumn,
+  Entity,
+  JoinColumn,
+  JoinTable,
+  OneToOne,
+  PrimaryGeneratedColumn,
+  UpdateDateColumn,
+} from 'typeorm';
 
 import { AdminEntity } from './admin.entity';
 import { StudentEntity } from './student.entity';
@@ -20,11 +30,11 @@ export class AccountEntity extends BaseEntity {
   @UpdateDateColumn()
   readonly updatedAt: Date;
 
-  @OneToOne(() => AdminEntity, (e) => e.account, { onDelete: 'CASCADE', nullable: true })
-  @JoinColumn()
+  @OneToOne(() => AdminEntity, (e) => e.account, { cascade: true, nullable: true })
+  @JoinTable()
   admin: AdminEntity | null;
 
-  @OneToOne(() => StudentEntity, (e) => e.account, { onDelete: 'CASCADE', nullable: true })
-  @JoinColumn()
+  @OneToOne(() => StudentEntity, (e) => e.account, { cascade: true, nullable: true })
+  @JoinTable()
   student: StudentEntity | null;
 }

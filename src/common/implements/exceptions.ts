@@ -23,3 +23,8 @@ export class RequriedSchoolExistException extends NotFoundException {}
 export class CannotAccessShoolNewsException extends ForbiddenException {}
 export class NotFoundStudentException extends NotFoundException {}
 export class NotFoundSchoolException extends NotFoundException {}
+
+export class NotFoundAdminException extends NotFoundException {}
+export class NotExistSchoolException extends NotFoundException {}
+export class CannotUpdateNewsException extends ForbiddenException {}
+export class CannotDeleteNewsException extends ForbiddenException {}

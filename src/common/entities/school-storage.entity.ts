@@ -2,15 +2,15 @@ import { BaseEntity, Column, Entity, JoinColumn, OneToOne, PrimaryGeneratedColum
 
 import { SchoolEntity } from './school.entity';
 
-@Entity('school_storage')
-export class SchoolStorageEntity extends BaseEntity {
+@Entity('school_count')
+export class SchoolCountEntity extends BaseEntity {
   @PrimaryGeneratedColumn({ type: 'int', unsigned: true })
   readonly id: number;
 
-  @Column({ type: 'bigint', unsigned: true, default: 0 })
-  subscribers: bigint;
+  @Column({ type: 'int', unsigned: true, default: 0 })
+  subscribers: number;
 
-  @OneToOne(() => SchoolEntity, (e) => e.schoolStorage, { onDelete: 'CASCADE' })
+  @OneToOne(() => SchoolEntity, (e) => e.count, { onDelete: 'CASCADE' })
   @JoinColumn()
   school: SchoolEntity;
 }

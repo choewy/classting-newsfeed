@@ -5,3 +5,4 @@ export * from './school-news.entity';
 export * from './school-storage.entity';
 export * from './student.entity';
 export * from './subscribe.entity';
+export * from './news.entity';

@@ -3,6 +3,7 @@ import {
   Column,
   CreateDateColumn,
   Entity,
+  JoinColumn,
   JoinTable,
   OneToMany,
   OneToOne,
@@ -27,8 +28,8 @@ export class StudentEntity extends BaseEntity {
   @UpdateDateColumn()
   readonly updatedAt: Date;
 
-  @OneToOne(() => AccountEntity, (e) => e.student, { cascade: true })
-  @JoinTable()
+  @OneToOne(() => AccountEntity, (e) => e.student, { onDelete: 'CASCADE' })
+  @JoinColumn()
   account: AccountEntity;
 
   @OneToMany(() => SubscribeEntity, (e) => e.student, { cascade: true })
