@@ -8,6 +8,7 @@ import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { JwtConfig, TypeormConfig } from './configs';
 import { ShcoolPageModule } from './school-page/school-page.module';
+import { SubscriptionModule } from './subscription/subscription.module';
 
 @Module({
   imports: [
@@ -24,6 +25,7 @@ import { ShcoolPageModule } from './school-page/school-page.module';
     HealthLibsModule,
     AuthModule,
     ShcoolPageModule,
+    SubscriptionModule,
   ],
   controllers: [AppController],
   providers: [AppService],

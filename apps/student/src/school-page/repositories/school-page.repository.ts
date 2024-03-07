@@ -10,8 +10,8 @@ export class SchoolPageRepository extends AbstractRepository<SchoolPageEntity> {
       queryBuilder.leftJoinAndMapOne(
         'schoolPage.subscription',
         'schoolPage.subscriptions',
-        'subscription',
-        'subscription.studentId = :studentId AND subscription.schoolPageId = schoolPage.id',
+        'sub',
+        'sub.studentId = :studentId AND sub.schoolPageId = schoolPage.id AND sub.subscription = TRUE',
         { studentId },
       );
     }
