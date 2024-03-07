@@ -1,2 +1,3 @@
+export * from './decorators';
+export * from './abstracts';
 export * from './typeorm.module';
-export * from './typeorm.service';
