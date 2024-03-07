@@ -9,7 +9,7 @@ import { ReqUser } from '../auth/decorators/req-user';
 import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
 
 @ApiTags('학교 페이지')
-@Controller('school-page')
+@Controller('school/page')
 @UseGuards(JwtAuthGuard)
 export class SchoolPageController {
   constructor(private readonly schoolPageService: SchoolPageService) {}

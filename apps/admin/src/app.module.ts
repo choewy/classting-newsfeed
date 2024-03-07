@@ -7,6 +7,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
 import { JwtConfig, TypeormConfig } from './configs';
+import { SchoolNewsModule } from './school-news/school-news.module';
 import { SchoolPageModule } from './school-page/school-page.module';
 
 @Module({
@@ -24,6 +25,7 @@ import { SchoolPageModule } from './school-page/school-page.module';
     HealthLibsModule,
     AuthModule,
     SchoolPageModule,
+    SchoolNewsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

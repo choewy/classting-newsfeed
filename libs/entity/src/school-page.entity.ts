@@ -12,6 +12,7 @@ import {
 } from 'typeorm';
 
 import { AdminEntity } from './admin.entity';
+import { SchoolNewsEntity } from './school-news.entity';
 import { SchoolPageCountEntity } from './school-page-count.entity';
 import { SubscriptionEntity } from './subscription.entity';
 
@@ -35,6 +36,10 @@ export class SchoolPageEntity extends BaseEntity {
   @OneToOne(() => AdminEntity, (e) => e.schoolPage, { onDelete: 'CASCADE' })
   @JoinColumn()
   admin: AdminEntity;
+
+  @OneToMany(() => SchoolNewsEntity, (e) => e.schoolPage, { cascade: ['remove'] })
+  @JoinTable()
+  schoolNews: SchoolNewsEntity[];
 
   @OneToOne(() => SchoolPageCountEntity, (e) => e.schoolPage, { cascade: ['insert', 'remove'], eager: true })
   @JoinTable()
