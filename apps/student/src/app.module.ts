@@ -4,13 +4,14 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { TypeormConfig } from './configs';
+import { AuthModule } from './auth/auth.module';
+import { JwtConfig, TypeormConfig } from './configs';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      load: [TypeormConfig],
+      load: [TypeormConfig, JwtConfig],
     }),
     TypeOrmLibsModule.forRootAsync({
       inject: [ConfigService],
@@ -18,6 +19,7 @@ import { TypeormConfig } from './configs';
         return configService.get('typeorm');
       },
     }),
+    AuthModule,
   ],
   controllers: [AppController],
   providers: [AppService],
