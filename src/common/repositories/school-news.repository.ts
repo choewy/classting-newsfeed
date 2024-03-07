@@ -31,4 +31,8 @@ export class SchoolNewsRepository extends AbstractRepository<SchoolNewsEntity> {
 
     return schoolNews;
   }
+
+  async deleteById(id: bigint) {
+    return this.delete(String(id));
+  }
 }

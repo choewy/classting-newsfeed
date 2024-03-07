@@ -6,7 +6,7 @@ import {
   RequriedSchoolExistException,
 } from '@common/implements';
 import { AdminRepository, SchoolNewsRepository, SchoolRepository } from '@common/repositories';
-import { SchoolDto, SchoolNewsDto } from '@domain/school/dtos';
+import { SchoolDto, SchoolNewsDeleteResultDto, SchoolNewsDto } from '@domain/school/dtos';
 import { SchoolService } from '@domain/school/school.service';
 import { Test, TestingModule } from '@nestjs/testing';
 import { Mock } from '@utils/mock';
@@ -127,6 +127,46 @@ describe('SchoolService', () => {
       const command = SchoolFixture.UpdateSchoolNewsCommand();
 
       expect(service.updateSchoolNews(1, BigInt(1), command)).resolves.toBeInstanceOf(SchoolNewsDto);
+    });
+  });
+
+  describe('deleteSchoolNews', () => {
+    it('관리자가 학교를 생성하지 않은 경우 RequriedSchoolExistException을 던진다.', () => {
+      jest.spyOn(module.get(AdminRepository), 'findByIdWithSchool').mockResolvedValue(SchoolFixture.Admin({ school: null }));
+
+      expect(service.deleteSchoolNews(1, BigInt(1))).rejects.toBeInstanceOf(RequriedSchoolExistException);
+    });
+
+    it('학교 소식이 존재하지 않으면 NotFoundSchoolNewsException을 던진다.', () => {
+      jest.spyOn(module.get(AdminRepository), 'findByIdWithSchool').mockResolvedValue(SchoolFixture.Admin({ school: { id: 1 } }));
+      jest.spyOn(module.get(SchoolNewsRepository), 'findByIdSchoolAndAdmins').mockResolvedValue(null);
+
+      expect(service.deleteSchoolNews(1, BigInt(1))).rejects.toBeInstanceOf(NotFoundSchoolNewsException);
+    });
+
+    it('관리자가 다른 학교의 뉴스를 삭제하려는 경우 CannotAccessShoolNewsException을 던진다.', () => {
+      jest.spyOn(module.get(AdminRepository), 'findByIdWithSchool').mockResolvedValue(SchoolFixture.Admin({ school: { id: 1 } }));
+      jest
+        .spyOn(module.get(SchoolNewsRepository), 'findByIdSchoolAndAdmins')
+        .mockResolvedValue(SchoolFixture.SchoolNews({ school: { id: 2 } }));
+
+      expect(service.deleteSchoolNews(1, BigInt(1))).rejects.toBeInstanceOf(CannotAccessShoolNewsException);
+    });
+
+    it('학교 소식 삭제가 완료되면 SchoolNewsDeleteResultDto을 반환한다.', () => {
+      const school = SchoolFixture.School({ id: 1 });
+      const admin = SchoolFixture.Admin({ id: 1, school });
+
+      jest.spyOn(module.get(AdminRepository), 'findByIdWithSchool').mockResolvedValue(admin);
+      jest
+        .spyOn(module.get(SchoolNewsRepository), 'findByIdSchoolAndAdmins')
+        .mockResolvedValue(SchoolFixture.SchoolNews({ school, writer: admin }));
+      jest.spyOn(module.get(SchoolNewsRepository), 'deleteById').mockResolvedValue({
+        raw: [],
+        affected: 1,
+      });
+
+      expect(service.deleteSchoolNews(1, BigInt(1))).resolves.toBeInstanceOf(SchoolNewsDeleteResultDto);
     });
   });
 });

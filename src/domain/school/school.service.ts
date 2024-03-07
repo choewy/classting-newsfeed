@@ -9,7 +9,7 @@ import { AdminRepository, SchoolNewsRepository, SchoolRepository } from '@common
 import { Injectable } from '@nestjs/common';
 
 import { CreateSchoolCommand, CreateSchoolNewsCommand, UpdateSchoolNewsCommand } from './commands';
-import { SchoolDto, SchoolNewsDto } from './dtos';
+import { SchoolDto, SchoolNewsDeleteResultDto, SchoolNewsDto } from './dtos';
 
 @Injectable()
 export class SchoolService {
@@ -79,6 +79,24 @@ export class SchoolService {
   }
 
   async deleteSchoolNews(adminId: number, schoolNewsId: bigint) {
-    return;
+    const admin = await this.adminRepository.findByIdWithSchool(adminId);
+
+    if (admin.school === null) {
+      throw new RequriedSchoolExistException();
+    }
+
+    const schoolNews = await this.schoolNewsRepository.findByIdSchoolAndAdmins(schoolNewsId);
+
+    if (schoolNews === null) {
+      throw new NotFoundSchoolNewsException();
+    }
+
+    if (schoolNews.school.id !== admin.school.id) {
+      throw new CannotAccessShoolNewsException();
+    }
+
+    const deleteResult = await this.schoolNewsRepository.deleteById(schoolNewsId);
+
+    return new SchoolNewsDeleteResultDto(schoolNewsId, deleteResult);
   }
 }
