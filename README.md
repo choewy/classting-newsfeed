@@ -1,76 +1,73 @@
-# News Feed
+<p align="center">
+  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" /></a>
+</p>
+
+[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
+[circleci-url]: https://circleci.com/gh/nestjs/nest
+
+  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
+    <p align="center">
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
+<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
+<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
+<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
+<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
+<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
+<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
+  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg"/></a>
+    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
+  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow"></a>
+</p>
+  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
+  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+
+## Description
+
+[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+
+## Installation
 
 ```bash
-git clone https://github.com/choewy/classting-newsfeed.git
+$ npm install
 ```
 
-## 1. 서버 구동
-
-(작성 예정)
-
-## 2. 개발환경 설정
-
-### 1. MySQL 8.0 실행
-
-> 본 프로젝트에서는 Docker로 MySQL을 실행하였음
-> 만약, 자신의 기기에 설치된 MySQL을 실행하는 경우에는 스킵 가능
-
-- host : 127.0.0.1
-- port : 3307
-- database : local
+## Running the app
 
 ```bash
-cd docker && docker-compose up --build -d
+# development
+$ npm run start
+
+# watch mode
+$ npm run start:dev
+
+# production mode
+$ npm run start:prod
 ```
 
-### 2. 환경변수 설정
+## Test
 
 ```bash
-cp .env.public .env
+# unit tests
+$ npm run test
+
+# e2e tests
+$ npm run test:e2e
+
+# test coverage
+$ npm run test:cov
 ```
 
-### 3. npm 의존성 설치 및 실행
+## Support
 
-```bash
-npm ci
-```
+Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
 
-- 단위 테스트 실행
+## Stay in touch
 
-```bash
-npm run test
-```
+- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
+- Website - [https://nestjs.com](https://nestjs.com/)
+- Twitter - [@nestframework](https://twitter.com/nestframework)
 
-- 통합 테스트 실행
+## License
 
-```bash
-npm run test:e2e
-```
-
-- 서버 애플리케이션 실행
-
-```bash
-npm run start:dev
-```
-
-## 3. 요구사항
-
-1. 학교 관리자는 학교 페이지를 운영하여 학교 소식을 발행할 수 있다.
-
-1.1. 학교 관리자는 지역, 학교명으로 학교 페지이를 생성할 수 있다.
-1.2. 학교 관리자는 학교 페이지 내에 소식을 생성할 수 있다.
-1.3. 학교 관리자는 작성된 소식을 수정할 수 있다.
-1.4. 학교 관리자는 작성된 소식을 삭제할 수 있다.
-
-2. 학생은 학교 페이지를 구독하여 학교 소식을 받아볼 수 있다.
-
-2.1. 학생은 학교 페이지를 구독할 수 있다.
-2.2. 학생은 구독 중인 학교 페이지 목록을 확인할 수 있다.
-2.3. 학생은 구독 중인 학교 페이지 구독을 취소할 수 있다.
-2.4. 학생은 구독 중인 학교 페이지별 소식을 최신순으로 볼 수 있다.
-
-3. 학생은 구독 중인 학교 소식을 자신의 뉴스피드에서 모아볼 수 있다.
-
-3.1. 구독중인 모든 학교의 소식을 모아서 최신순으로 볼 수 있다.
-3.2. 학교 페이지를 구독하는 시점 이후부터 뉴스피드를 받는다.
-3.3. 학교 페이지 구독을 취소하는 경우 기존 뉴스피드에 노출된 소식은 유지되어야 한다.
+Nest is [MIT licensed](LICENSE).

@@ -19,11 +19,36 @@
     "noFallthroughCasesInSwitch": false,
     "esModuleInterop": true,
     "paths": {
-      "@utils/*": ["test/utils/*"],
-      "@core/*": ["src/core/*"],
-      "@config/*": ["src/config/*"],
-      "@common/*": ["src/common/*"],
-      "@domain/*": ["src/domain/*"]
+      "@libs/typeorm": [
+        "libs/typeorm/src"
+      ],
+      "@libs/typeorm/*": [
+        "@libs/typeorm/src/*"
+      ],
+      "@libs/health": [
+        "libs/health/src"
+      ],
+      "@libs/health/*": [
+        "libs/health/src/*"
+      ],
+      "@libs/logger": [
+        "libs/logger/src"
+      ],
+      "@libs/logger/*": [
+        "libs/logger/src/*"
+      ],
+      "@libs/entity": [
+        "libs/entity/src"
+      ],
+      "@libs/entity/*": [
+        "libs/entity/src/*"
+      ],
+      "@libs/bootstrap": [
+        "libs/bootstrap/src"
+      ],
+      "@libs/bootstrap/*": [
+        "libs/bootstrap/src/*"
+      ]
     }
   }
 }

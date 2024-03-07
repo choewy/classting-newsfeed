@@ -2,11 +2,10 @@
 /dist
 /node_modules
 /build
-
-# docker
-/docker/**/disk
-/docker/**/lib
-/docker/**/log
+/temp
+/docker/mysql/lib
+/docker/mysql/log
+/docker/mysql/disk
 
 # Logs
 logs
