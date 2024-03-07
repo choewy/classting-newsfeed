@@ -4,10 +4,7 @@ import { AbstractRepository, InjectableRepository } from '@libs/typeorm';
 @InjectableRepository(AdminEntity)
 export class AdminRepository extends AbstractRepository<AdminEntity> {
   async findOneByEmail(email: string) {
-    return this.findOne({
-      relations: { schoolPage: true },
-      where: { email },
-    });
+    return this.findOneBy({ email });
   }
 
   async existsByEmail(email: string) {
