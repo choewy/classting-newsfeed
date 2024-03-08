@@ -24,7 +24,8 @@ export class SubscriptionRepository extends AbstractRepository<SubscriptionEntit
 
   async insertAndIncreaseCount(studentId: number, schoolPageId: number) {
     return this.transaction(async (em) => {
-      await em.getRepository(SubscriptionEntity).insert(this.create({ studentId, schoolPageId, status: true }));
+      const subscription = this.create({ studentId, schoolPageId, status: true });
+      await em.getRepository(SubscriptionEntity).insert(subscription);
       await em
         .getRepository(SchoolPageCountEntity)
         .createQueryBuilder()

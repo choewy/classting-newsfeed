@@ -6,7 +6,7 @@ export class SignInCommand {
   @IsEmail()
   email: string;
 
-  @ApiProperty({ type: String })
+  @ApiProperty({ type: String, example: 'password' })
   @Length(8, 50)
   password: string;
 }

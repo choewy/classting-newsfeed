@@ -10,11 +10,11 @@ export class SignUpCommand {
   @Length(2, 20)
   name: string;
 
-  @ApiProperty({ type: String })
+  @ApiProperty({ type: String, example: 'password' })
   @Length(8, 50)
   password: string;
 
-  @ApiProperty({ type: String })
+  @ApiProperty({ type: String, example: 'password' })
   @Length(8, 50)
   confirmPassword: string;
 }

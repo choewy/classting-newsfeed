@@ -14,11 +14,11 @@ export class SubscriptionEntity extends BaseEntity {
   @Column({ type: 'boolean' })
   status: boolean;
 
-  @Column({ type: 'datetime', default: null })
-  unsubscribedAt: Date | null;
-
   @CreateDateColumn()
   readonly subscribedAt: Date;
+
+  @Column({ type: 'timestamp', default: null })
+  readonly unsubscribedAt: Date | null;
 
   @ManyToOne(() => StudentEntity, (e) => e.subscriptions, { onDelete: 'CASCADE' })
   @JoinColumn()

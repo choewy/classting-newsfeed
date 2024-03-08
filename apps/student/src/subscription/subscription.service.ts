@@ -49,15 +49,16 @@ export class SubscriptionService {
 
     const subscription = await this.subscriptionRepository.findOneByStudentAndSchoolPage(studentId, schoolPageId);
 
-    if (subscription?.status === true) {
-      return;
-    }
+    switch (subscription?.status) {
+      case true:
+        return;
 
-    if (subscription?.status === false) {
-      await this.subscriptionRepository.deleteOne(studentId, schoolPageId);
-    }
+      case false:
+        await this.subscriptionRepository.deleteOne(studentId, schoolPageId);
 
-    await this.subscriptionRepository.insertAndIncreaseCount(studentId, schoolPageId);
+      default:
+        await this.subscriptionRepository.insertAndIncreaseCount(studentId, schoolPageId);
+    }
   }
 
   async unsubscribeSchoolPage(studentId: number, schoolPageId: number) {
