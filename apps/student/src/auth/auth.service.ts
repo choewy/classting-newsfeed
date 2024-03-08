@@ -10,34 +10,34 @@ import { StudentRepository } from '../common/repositories';
 
 @Injectable()
 export class AuthService {
-  private readonly jwtConfig: JwtConfigReturnType;
-
   constructor(
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
     private readonly studentRepository: StudentRepository,
-  ) {
-    this.jwtConfig = this.configService.get<JwtConfigReturnType>('jwt');
-  }
+  ) {}
 
   createTokens(id: number) {
     const payload = { id };
 
+    const config = this.configService.get<JwtConfigReturnType>('jwt');
+
     return new JwtTokensDto(
-      this.jwtService.sign(payload, { ...this.jwtConfig.access.signOptions, secret: this.jwtConfig.access.secret }),
-      this.jwtService.sign(payload, { ...this.jwtConfig.refresh.signOptions, secret: this.jwtConfig.refresh.secret }),
+      this.jwtService.sign(payload, { ...config.access.signOptions, secret: config.access.secret }),
+      this.jwtService.sign(payload, { ...config.refresh.signOptions, secret: config.refresh.secret }),
     );
   }
 
   async refreshTokens(command: RefreshTokensCommand) {
+    const config = this.configService.get<JwtConfigReturnType>('jwt');
+
     const access = await this.jwtService
-      .verifyAsync(command.access, { ...this.jwtConfig.access.verifyOptions, secret: this.jwtConfig.access.secret, ignoreExpiration: true })
+      .verifyAsync(command.access, { ...config.access.verifyOptions, secret: config.access.secret, ignoreExpiration: true })
       .catch((e) => {
         throw new UnauthorizedException(e);
       });
 
     const refresh = await this.jwtService
-      .verifyAsync(command.refresh, { ...this.jwtConfig.refresh.verifyOptions, secret: this.jwtConfig.refresh.secret })
+      .verifyAsync(command.refresh, { ...config.refresh.verifyOptions, secret: config.refresh.secret })
       .catch((e) => {
         throw new UnauthorizedException(e);
       });
@@ -58,13 +58,12 @@ export class AuthService {
       throw new ConflictException('already exist student.');
     }
 
-    const student = this.studentRepository.create({
+    const student = await this.studentRepository.insertOne({
       name: command.name,
       email: command.email,
       password: hashSync(command.password, 10),
     });
 
-    await this.studentRepository.insert(student);
     return this.createTokens(student.id);
   }
 
