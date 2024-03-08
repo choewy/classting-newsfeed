@@ -7,15 +7,6 @@
   },
   "monorepo": true,
   "projects": {
-    "student": {
-      "type": "application",
-      "root": "apps/student",
-      "entryFile": "main",
-      "sourceRoot": "apps/student/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/student/tsconfig.app.json"
-      }
-    },
     "admin": {
       "type": "application",
       "root": "apps/admin",
@@ -23,6 +14,15 @@
       "sourceRoot": "apps/admin/src",
       "compilerOptions": {
         "tsConfigPath": "apps/admin/tsconfig.app.json"
+      }
+    },
+    "student": {
+      "type": "application",
+      "root": "apps/student",
+      "entryFile": "main",
+      "sourceRoot": "apps/student/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/student/tsconfig.app.json"
       }
     },
     "typeorm": {

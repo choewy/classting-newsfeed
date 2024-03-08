@@ -1,8 +1,18 @@
 version: '3.8'
 
+name: classting
+
+x-environment: &environment
+  TZ: UTC
+  NODE_ENV: local
+  MYSQL_HOST: mysql
+  MYSQL_PORT: 3306
+  MYSQL_USERNAME: root
+  MYSQL_DATABASE: newsfeed
+  MYSQL_SYNCHRONIZE: true
+
 services:
   mysql:
-    container_name: mysql
     build:
       context: ./mysql
       dockerfile: dockerfile
@@ -14,6 +24,40 @@ services:
       - ./mysql/log:/var/log/mysql
       - ./mysql/lib:/var/lib/mysql
       - ./mysql/disk:/disk
+    networks:
+      - newsfeed
+
+  admin:
+    depends_on:
+      - mysql
+    build:
+      context: ./admin
+      dockerfile: dockerfile
+    environment:
+      <<: *environment
+      JWT_ADMIN_ACCESS_SECRET: jwt-admin-atk
+      JWT_ADMIN_REFRESH_SECRET: jwt-admin-rtk
+    ports:
+      - 4000:4000
+    volumes:
+      - ./admin/logs:/var/app/logs
+    networks:
+      - newsfeed
+
+  student:
+    depends_on:
+      - admin
+    build:
+      context: ./student
+      dockerfile: dockerfile
+    environment:
+      <<: *environment
+      JWT_STUDENT_ACCESS_SECRET: jwt-student-atk
+      JWT_STUDENT_REFRESH_SECRET: jwt-student-rtk
+    ports:
+      - 4001:4001
+    volumes:
+      - ./student/logs:/var/app/logs
     networks:
       - newsfeed
 

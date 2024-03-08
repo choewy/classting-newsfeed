@@ -10,7 +10,7 @@ async function bootstrap() {
     swagger: new DocumentBuilder().setTitle('Classting Student APIs').addBearerAuth(),
   });
 
-  await app.listen(3000);
+  await app.listen(4001);
 }
 
 bootstrap();
