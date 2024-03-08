@@ -28,14 +28,11 @@ export class SchoolNewsService {
       throw new NotFoundException('not found school page');
     }
 
-    const schoolNews = this.schoolNewsRepository.create({
+    const schoolNews = await this.schoolNewsRepository.insertOne(schoolPage, {
       title: command.title,
       contents: command.contents,
       hidden: command.hidden,
-      schoolPage,
     });
-
-    await this.schoolNewsRepository.insert(schoolNews);
 
     return new SchoolNewsDto(schoolNews);
   }
@@ -57,16 +54,13 @@ export class SchoolNewsService {
       throw new ForbiddenException('cannot update school news');
     }
 
-    const updatedSchoolNews = this.schoolNewsRepository.create({
-      ...schoolNews,
+    const updatedSchoolNews = await this.schoolNewsRepository.updateOne(schoolNews, {
       title: command.title,
       contents: command.contents,
       hidden: command.hidden,
     });
 
-    await updatedSchoolNews.save();
-
-    return new SchoolNewsDto(schoolNews);
+    return new SchoolNewsDto(updatedSchoolNews);
   }
 
   async deleteSchoolNews(adminId: number, newsId: number) {
@@ -83,7 +77,7 @@ export class SchoolNewsService {
     }
 
     if (schoolNews.schoolPage.id !== schoolPage.id) {
-      throw new ForbiddenException('cannot update school news');
+      throw new ForbiddenException('cannot delete school news');
     }
 
     await this.schoolNewsRepository.delete(schoolNews.id);
