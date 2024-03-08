@@ -3,6 +3,10 @@ import { AbstractRepository, InjectableRepository } from '@libs/typeorm';
 
 @InjectableRepository(SchoolPageEntity)
 export class SchoolPageRepository extends AbstractRepository<SchoolPageEntity> {
+  async existsById(id: number) {
+    return this.existsBy({ id });
+  }
+
   async findManyAndCount(studentId: number | null, skip: number, take: number) {
     const queryBuilder = this.createQueryBuilder('schoolPage').skip(skip).take(take);
 

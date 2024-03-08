@@ -4,9 +4,9 @@ import { SubscribedSchoolNewsListDto } from './dtos/subscribed-school-news-list.
 import { SubscribedSchoolPageListDto } from './dtos/subscribed-school-page-list.dto';
 import { GetSubscribedSchoolNewsListQuery } from './queries/get-subscribed-school-news-list.query';
 import { GetSubscribedSchoolPageListQuery } from './queries/get-subscribed-school-page-list.query';
-import { SchoolNewsRepository } from './repositories/school-news.repository';
-import { SchoolPageRepository } from './repositories/school-page.repository';
-import { SubscriptionRepository } from './repositories/subscription.repository';
+import { SchoolNewsRepository } from '../repositories/school-news.repository';
+import { SchoolPageRepository } from '../repositories/school-page.repository';
+import { SubscriptionRepository } from '../repositories/subscription.repository';
 
 @Injectable()
 export class SubscriptionService {
@@ -35,7 +35,7 @@ export class SubscriptionService {
       throw new ForbiddenException('not subscribed');
     }
 
-    const [rows, total] = await this.schoolNewsRepository.findManyAndCount(schoolPageId, query.skip, query.take);
+    const [rows, total] = await this.schoolNewsRepository.findManyAndCountBySchoolPage(schoolPageId, query.skip, query.take);
 
     return new SubscribedSchoolNewsListDto(rows, total);
   }

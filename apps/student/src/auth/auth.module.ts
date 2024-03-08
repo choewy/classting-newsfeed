@@ -7,9 +7,9 @@ import { PassportModule } from '@nestjs/passport';
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
-import { StudentRepository } from './repositories/student.repository';
 import { JwtAuthStrategy } from './strategies/jwt-auth.strategy';
 import { JwtConfigReturnType } from '../configs';
+import { StudentRepository } from '../repositories/student.repository';
 
 @Module({
   imports: [
