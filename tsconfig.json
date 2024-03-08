@@ -24,7 +24,7 @@
       "@apps/student": ["apps/student/src"],
       "@apps/student/*": ["apps/student/src/*"],
       "@libs/typeorm": ["libs/typeorm/src"],
-      "@libs/typeorm/*": ["@libs/typeorm/src/*"],
+      "@libs/typeorm/*": ["libs/typeorm/src/*"],
       "@libs/health": ["libs/health/src"],
       "@libs/health/*": ["libs/health/src/*"],
       "@libs/logger": ["libs/logger/src"],
