@@ -1,5 +1,6 @@
 import { SchoolPageEntity } from '@libs/entity';
 import { AbstractRepository, InjectableRepository } from '@libs/typeorm';
+import { DeepPartial } from 'typeorm';
 
 @InjectableRepository(SchoolPageEntity)
 export class SchoolPageRepository extends AbstractRepository<SchoolPageEntity> {
@@ -17,5 +18,12 @@ export class SchoolPageRepository extends AbstractRepository<SchoolPageEntity> {
 
   async deleteByAdminId(adminId: number) {
     return this.delete({ admin: { id: adminId } });
+  }
+
+  async createOne(adminId: number, properies: DeepPartial<SchoolPageEntity>) {
+    const schoolPage = this.create({ ...properies, admin: { id: adminId }, schoolPageCount: {} });
+    await schoolPage.save();
+
+    return schoolPage;
   }
 }

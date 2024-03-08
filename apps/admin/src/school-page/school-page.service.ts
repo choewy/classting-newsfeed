@@ -25,14 +25,10 @@ export class SchoolPageService {
       throw new ConflictException('already exists school page');
     }
 
-    const schoolPage = this.schoolPageRepository.create({
+    const schoolPage = await this.schoolPageRepository.createOne(adminId, {
       name: command.name,
       location: command.location,
-      admin: { id: adminId },
-      schoolPageCount: {},
     });
-
-    await schoolPage.save();
 
     return new SchoolPageDto(schoolPage);
   }
