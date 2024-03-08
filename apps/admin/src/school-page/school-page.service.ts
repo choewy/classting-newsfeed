@@ -1,9 +1,8 @@
 import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
 
-import { CreateSchoolPageCommand } from './commands/create-school-page.commad';
-import { UpdateSchoolPageCommand } from './commands/update-school-page.commad';
-import { SchoolPageDto } from './dtos/school-page.dto';
-import { SchoolPageRepository } from '../repositories/school-page.repository';
+import { CreateSchoolPageCommand, UpdateSchoolPageCommand } from './commands';
+import { SchoolPageDto } from './dtos';
+import { SchoolPageRepository } from '../common/repositories';
 
 @Injectable()
 export class SchoolPageService {

@@ -6,10 +6,10 @@ import { PassportModule } from '@nestjs/passport';
 
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { JwtAuthGuard } from './guards/jwt-auth.guard';
-import { JwtAuthStrategy } from './strategies/jwt-auth.strategy';
-import { JwtConfigReturnType } from '../configs';
-import { AdminRepository } from '../repositories/admin.repository';
+import { JwtAuthGuard } from './guards';
+import { JwtAuthStrategy } from './strategies';
+import { JwtConfigReturnType } from '../common/configs';
+import { AdminRepository } from '../common/repositories';
 
 @Module({
   imports: [

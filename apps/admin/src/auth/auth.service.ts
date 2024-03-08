@@ -7,8 +7,8 @@ import { RefreshTokensCommand } from './commands/refresh-tokens.command';
 import { SignInCommand } from './commands/signin.command';
 import { SignUpCommand } from './commands/signup.command';
 import { JwtTokensDto } from './dtos/jwt-tokens.dto';
-import { JwtConfigReturnType } from '../configs';
-import { AdminRepository } from '../repositories/admin.repository';
+import { JwtConfigReturnType } from '../common/configs';
+import { AdminRepository } from '../common/repositories/admin.repository';
 
 @Injectable()
 export class AuthService {

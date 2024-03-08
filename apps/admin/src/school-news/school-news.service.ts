@@ -1,12 +1,9 @@
 import { ForbiddenException, Injectable, NotFoundException } from '@nestjs/common';
 
-import { CreateSchoolNewsCommad } from './commands/create-school-news.command';
-import { UpdateSchoolNewsCommad } from './commands/update-school-news.command';
-import { SchoolNewsListDto } from './dtos/school-news-list.dto';
-import { SchoolNewsDto } from './dtos/school-news.dto';
-import { GetSchoolNewsListQuery } from './queries/get-school-news-list.query';
-import { SchoolNewsRepository } from '../repositories/school-news.repository';
-import { SchoolPageRepository } from '../repositories/school-page.repository';
+import { CreateSchoolNewsCommad, UpdateSchoolNewsCommad } from './commands';
+import { SchoolNewsDto, SchoolNewsListDto } from './dtos';
+import { GetSchoolNewsListQuery } from './queries';
+import { SchoolPageRepository, SchoolNewsRepository } from '../common/repositories';
 
 @Injectable()
 export class SchoolNewsService {

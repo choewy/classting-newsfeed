@@ -6,9 +6,9 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthModule } from './auth/auth.module';
-import { JwtConfig, TypeormConfig } from './configs';
-import { SchoolNewsModule } from './school-news/school-news.module';
-import { SchoolPageModule } from './school-page/school-page.module';
+import { JwtConfig, TypeormConfig } from './common/configs';
+import { SchoolNewsModule } from './school-news';
+import { SchoolPageModule } from './school-page';
 
 @Module({
   imports: [

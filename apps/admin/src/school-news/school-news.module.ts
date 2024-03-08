@@ -3,8 +3,7 @@ import { Module } from '@nestjs/common';
 
 import { SchoolNewsController } from './school-news.controller';
 import { SchoolNewsService } from './school-news.service';
-import { SchoolNewsRepository } from '../repositories/school-news.repository';
-import { SchoolPageRepository } from '../repositories/school-page.repository';
+import { SchoolPageRepository, SchoolNewsRepository } from '../common/repositories';
 
 @Module({
   imports: [TypeOrmLibsModule.forFeature([SchoolPageRepository, SchoolNewsRepository])],

@@ -1,12 +1,10 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Patch, Post, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiNoContentResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 
-import { CreateSchoolPageCommand } from './commands/create-school-page.commad';
-import { UpdateSchoolPageCommand } from './commands/update-school-page.commad';
-import { SchoolPageDto } from './dtos/school-page.dto';
+import { CreateSchoolPageCommand, UpdateSchoolPageCommand } from './commands';
+import { SchoolPageDto } from './dtos';
 import { SchoolPageService } from './school-page.service';
-import { ReqUser } from '../auth/decorators/req-user';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { JwtAuthGuard, ReqUser } from '../auth';
 
 @ApiTags('학교 페이지')
 @Controller('school/page')

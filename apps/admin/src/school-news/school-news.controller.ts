@@ -1,15 +1,11 @@
 import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiNoContentResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 
-import { CreateSchoolNewsCommad } from './commands/create-school-news.command';
-import { UpdateSchoolNewsCommad } from './commands/update-school-news.command';
-import { SchoolNewsListDto } from './dtos/school-news-list.dto';
-import { SchoolNewsDto } from './dtos/school-news.dto';
-import { GetSchoolNewsListQuery } from './queries/get-school-news-list.query';
-import { GetSchoolNewsQuery } from './queries/get-school-news.query';
+import { CreateSchoolNewsCommad, UpdateSchoolNewsCommad } from './commands';
+import { SchoolNewsDto, SchoolNewsListDto } from './dtos';
+import { GetSchoolNewsQuery, GetSchoolNewsListQuery } from './queries';
 import { SchoolNewsService } from './school-news.service';
-import { ReqUser } from '../auth/decorators/req-user';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { JwtAuthGuard, ReqUser } from '../auth';
 
 @ApiTags('학교 소식')
 @Controller('school/news')
