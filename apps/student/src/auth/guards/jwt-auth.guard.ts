@@ -13,13 +13,13 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
   }
 
   handleRequest<TUser = any>(e: Error, payload: any, info: Error, ctx: ExecutionContext): TUser {
+    const ignoreError = this.reflector.getAllAndOverride<boolean>(IGNORE_JWT_AUTH_GUARD_ERROR, [ctx.getClass(), ctx.getHandler()]);
+
     let error = e ?? info;
 
-    if (error || payload == null) {
-      const ignoreError = this.reflector.getAllAndOverride<boolean>(IGNORE_JWT_AUTH_GUARD_ERROR, [ctx.getClass(), ctx.getHandler()]);
-
+    if (error) {
       if (ignoreError === true) {
-        return payload;
+        return payload ?? null;
       }
 
       if (error?.name !== TokenExpiredError.name) {
@@ -27,6 +27,14 @@ export class JwtAuthGuard extends AuthGuard('jwt') {
       }
 
       throw new UnauthorizedException(error);
+    }
+
+    if (payload == null) {
+      if (ignoreError === true) {
+        return payload ?? null;
+      }
+
+      throw new UnauthorizedException();
     }
 
     return payload ?? null;
