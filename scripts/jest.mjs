@@ -1,60 +1,54 @@
 import fs from 'fs';
 
-const __unit__ = {
-  path: './apps/$APP/test/jest.json',
+const unitConfig = (app, moduleNameMapper) => ({
+  path: `./apps/${app}/test/jest.json`,
   config: {
     moduleFileExtensions: ['js', 'json', 'ts'],
     rootDir: '../../..',
-    testRegex: 'apps/$APP/test/.*\\.spec\\.ts$',
+    testRegex: `apps/${app}/test/.*\\.spec\\.ts$`,
     transform: {
       '^.+\\.(t|j)s$': 'ts-jest',
     },
     collectCoverageFrom: ['**/*.(t|j)s'],
     coverageDirectory: './coverage',
     testEnvironment: 'node',
-    roots: ['<rootDir>/apps/', '<rootDir>/libs/'],
-    moduleNameMapper: {},
+    roots: [`<rootDir>/apps/${app}`, '<rootDir>/libs/'],
+    moduleNameMapper,
   },
-};
+});
 
-const __e2e__ = {
-  path: './apps/$APP/test/jest-e2e.json',
+const e2eConfig = (app, moduleNameMapper) => ({
+  path: `./apps/${app}/test/jest-e2e.json`,
   config: {
     moduleFileExtensions: ['js', 'json', 'ts'],
     rootDir: '../../..',
-    testRegex: 'apps/$APP/test/.*\\.e2e-spec\\.ts$',
+    testRegex: `apps/${app}/test/.*\\.e2e-spec\\.ts$`,
     transform: {
       '^.+\\.(t|j)s$': 'ts-jest',
     },
     collectCoverageFrom: ['**/*.(t|j)s'],
     coverageDirectory: './coverage',
     testEnvironment: 'node',
-    roots: ['<rootDir>/apps/', '<rootDir>/libs/'],
-    moduleNameMapper: {},
+    roots: [`<rootDir>/apps/${app}`, '<rootDir>/libs/'],
+    moduleNameMapper,
   },
-};
+});
 
-const prepare = () => {
-  const ts = JSON.parse(fs.readFileSync('./tsconfig.json', 'utf-8').toString());
-  const alias = Object.entries(ts.compilerOptions.paths);
+const moduleNameMapper = {};
 
-  for (const [k, v] of alias) {
-    const key = `^${k.replace('/*', '')}(|/.*)$`;
-    const value = `<rootDir>/${v.shift().replace('/*', '')}/$1`;
+const ts = JSON.parse(fs.readFileSync('./tsconfig.json', 'utf-8').toString());
+const alias = Object.entries(ts.compilerOptions.paths);
 
-    __unit__.config.moduleNameMapper[key] = value;
-    __e2e__.config.moduleNameMapper[key] = value;
-  }
-};
+for (const [k, v] of alias) {
+  const key = `^${k.replace('/*', '')}(|/.*)$`;
+  const value = `<rootDir>/${v.shift().replace('/*', '')}/$1`;
+
+  moduleNameMapper[key] = value;
+}
 
 const overwrite = (app) => {
-  const unit = { ...__unit__ };
-  unit.path = unit.path.replace('$APP', app);
-  unit.config.testRegex = unit.config.testRegex.replace('$APP', app);
-
-  const e2e = { ...__e2e__ };
-  e2e.path = e2e.path.replace('$APP', app);
-  e2e.config.testRegex = e2e.config.testRegex.replace('$APP', app);
+  const unit = unitConfig(app, moduleNameMapper);
+  const e2e = e2eConfig(app, moduleNameMapper);
 
   fs.writeFileSync(unit.path, JSON.stringify(unit.config, null, 2), 'utf-8');
   fs.writeFileSync(e2e.path, JSON.stringify(e2e.config, null, 2), 'utf-8');
@@ -68,5 +62,4 @@ const create = () => {
   }
 };
 
-prepare();
 create();
