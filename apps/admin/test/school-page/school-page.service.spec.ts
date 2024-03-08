@@ -19,7 +19,7 @@ describe(SchoolPageService.name, () => {
     service = module.get(SchoolPageService);
   });
 
-  it('SchoolPageService가 정의되어 있어야 한다.', () => {
+  it('SchoolPageService 인스턴스가 정의되어 있어야 한다.', () => {
     expect(service).toBeDefined();
   });
 

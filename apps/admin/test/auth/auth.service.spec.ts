@@ -28,7 +28,7 @@ describe(AuthService.name, () => {
     } as JwtConfigReturnType);
   });
 
-  it('AuthService가 정의되어야 한다.', () => {
+  it('AuthService 인스턴스가 정의되어야 한다.', () => {
     expect(service).toBeDefined();
   });
 
