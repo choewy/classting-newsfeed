@@ -1,7 +1,7 @@
 import { existsSync, writeFileSync } from 'fs';
 
 import { AdminEntity, SchoolNewsEntity, SchoolPageEntity, StudentEntity } from '@libs/entity';
-import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
+import { Injectable, Logger, OnApplicationBootstrap } from '@nestjs/common';
 import { hashSync } from 'bcrypt';
 import { DataSource } from 'typeorm';
 
@@ -13,7 +13,7 @@ export class InitializerService implements OnApplicationBootstrap {
     const initialized = [process.env.PWD, '.initialize'].join('/');
 
     if (existsSync(initialized)) {
-      return;
+      return Logger.verbose('already initialized.');
     }
 
     await this.upsertAdmins();
@@ -22,6 +22,8 @@ export class InitializerService implements OnApplicationBootstrap {
     await this.upsertSchoolNews();
 
     writeFileSync(initialized, String(new Date()), 'utf-8');
+
+    return Logger.verbose('success initialized.');
   }
 
   private password = hashSync('password', 10);
@@ -87,18 +89,18 @@ export class InitializerService implements OnApplicationBootstrap {
     for (let i = 1; i < 101; i++) {
       const rows: SchoolNewsEntity[] = [];
 
-      for (let j = 1; j < 1000; j++) {
+      for (let j = 1; j < 1001; j++) {
         rows.push(
           repo.create({
-            title: `학교(i)의 소식(j)`,
-            contents: `학교(i)의 소식(j) 입니다.`,
+            title: `학교(${i})의 소식(${j})`,
+            contents: `학교(${i})의 소식(${j}) 입니다.`,
             hidden: false,
             schoolPage: { id: i },
           }),
         );
-
-        await repo.upsert(rows, { conflictPaths: { id: true } });
       }
+
+      await repo.upsert(rows, { conflictPaths: { id: true } });
     }
   }
 }

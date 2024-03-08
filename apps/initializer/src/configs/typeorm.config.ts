@@ -13,7 +13,7 @@ export const TypeormConfig = registerAs(
     database: process.env.MYSQL_DATABASE,
     synchronize: process.env.NODE_ENV === 'local' ? process.env.MYSQL_SYNCHRONIZE === 'true' : false,
     entities: Object.values(entities),
-    logging: ['error', 'warn'],
+    logging: true,
     autoLoadEntities: true,
   }),
 );
