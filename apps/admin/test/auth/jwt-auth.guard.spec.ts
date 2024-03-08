@@ -1,8 +1,6 @@
 import { JwtAuthGuard } from '@apps/admin/auth';
-import { TestingFixture } from '@libs/testing';
 import { UnauthorizedException } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
-import { TokenExpiredError } from 'jsonwebtoken';
 
 describe(JwtAuthGuard.name, () => {
   let module: TestingModule;
@@ -17,9 +15,9 @@ describe(JwtAuthGuard.name, () => {
     expect(guard).toBeDefined();
   });
 
-  describe('canActive', () => {
+  describe('handleRequest', () => {
     it('JWT 토큰이 유효하지 않으면 UnauthorizedException을 던진다.', () => {
-      expect(async () => guard.handleRequest(null, {}, TestingFixture.of(TokenExpiredError))).rejects.toBeInstanceOf(UnauthorizedException);
+      expect(async () => guard.handleRequest(null, {}, new Error())).rejects.toBeInstanceOf(UnauthorizedException);
     });
 
     it('JWT 토큰의 Payload가 null이면 UnauthorizedException을 던진다.', () => {
