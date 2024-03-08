@@ -7,9 +7,9 @@
 /docker/mysql/log
 /docker/mysql/disk
 /docker/**/build.tar.gz
-/docker/**/dist
 /docker/**/logs
 
+.initialize
 
 # Logs
 logs
