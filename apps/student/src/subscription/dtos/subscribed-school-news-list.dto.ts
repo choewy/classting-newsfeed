@@ -1,4 +1,4 @@
-import { SchoolNewsEntity, SubscriptionEntity } from '@libs/entity';
+import { SchoolNewsEntity } from '@libs/entity';
 import { ApiProperty } from '@nestjs/swagger';
 
 import { SubscribedSchoolNewsDto } from './subscribed-school-news.dto';

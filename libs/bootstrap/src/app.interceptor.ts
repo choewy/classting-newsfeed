@@ -13,7 +13,7 @@ export class AppInterceptor implements NestInterceptor {
         const req = http.getRequest<Request>();
         const res = http.getResponse<Response>();
 
-        const status = Object.entries(HttpStatus).find(([_, v]) => v === res.statusCode);
+        const status = Object.entries(HttpStatus).find(([, v]) => v === res.statusCode);
 
         Logger.verbose({
           method: req.method,
