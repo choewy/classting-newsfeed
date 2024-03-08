@@ -25,6 +25,15 @@
         "tsConfigPath": "apps/student/tsconfig.app.json"
       }
     },
+    "initializer": {
+      "type": "application",
+      "root": "apps/initializer",
+      "entryFile": "main",
+      "sourceRoot": "apps/initializer/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/initializer/tsconfig.app.json"
+      }
+    },
     "typeorm": {
       "type": "library",
       "root": "libs/typeorm",

@@ -9,7 +9,7 @@ x-environment: &environment
   MYSQL_PORT: 3306
   MYSQL_USERNAME: root
   MYSQL_DATABASE: newsfeed
-  MYSQL_SYNCHRONIZE: true
+  MYSQL_SYNCHRONIZE: false
 
 services:
   mysql:
@@ -27,12 +27,24 @@ services:
     networks:
       - newsfeed
 
-  admin:
+  initializer:
     depends_on:
       - mysql
     build:
-      context: ./admin
-      dockerfile: dockerfile
+      context: .
+      dockerfile: initializer/dockerfile
+    environment:
+      <<: *environment
+      MYSQL_SYNCHRONIZE: true
+    networks:
+      - newsfeed
+
+  admin:
+    depends_on:
+      - initializer
+    build:
+      context: .
+      dockerfile: admin/dockerfile
     environment:
       <<: *environment
       JWT_ADMIN_ACCESS_SECRET: jwt-admin-atk
@@ -46,10 +58,10 @@ services:
 
   student:
     depends_on:
-      - admin
+      - initializer
     build:
-      context: ./student
-      dockerfile: dockerfile
+      context: .
+      dockerfile: student/dockerfile
     environment:
       <<: *environment
       JWT_STUDENT_ACCESS_SECRET: jwt-student-atk

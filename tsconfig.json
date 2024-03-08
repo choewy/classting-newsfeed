@@ -19,22 +19,54 @@
     "noFallthroughCasesInSwitch": false,
     "esModuleInterop": true,
     "paths": {
-      "@apps/admin": ["apps/admin/src"],
-      "@apps/admin/*": ["apps/admin/src/*"],
-      "@apps/student": ["apps/student/src"],
-      "@apps/student/*": ["apps/student/src/*"],
-      "@libs/typeorm": ["libs/typeorm/src"],
-      "@libs/typeorm/*": ["libs/typeorm/src/*"],
-      "@libs/health": ["libs/health/src"],
-      "@libs/health/*": ["libs/health/src/*"],
-      "@libs/logger": ["libs/logger/src"],
-      "@libs/logger/*": ["libs/logger/src/*"],
-      "@libs/entity": ["libs/entity/src"],
-      "@libs/entity/*": ["libs/entity/src/*"],
-      "@libs/bootstrap": ["libs/bootstrap/src"],
-      "@libs/bootstrap/*": ["libs/bootstrap/src/*"],
-      "@libs/testing": ["libs/testing/src"],
-      "@libs/testing/*": ["libs/testing/src/*"]
+      "@apps/admin": [
+        "apps/admin/src"
+      ],
+      "@apps/admin/*": [
+        "apps/admin/src/*"
+      ],
+      "@apps/student": [
+        "apps/student/src"
+      ],
+      "@apps/student/*": [
+        "apps/student/src/*"
+      ],
+      "@libs/typeorm": [
+        "libs/typeorm/src"
+      ],
+      "@libs/typeorm/*": [
+        "libs/typeorm/src/*"
+      ],
+      "@libs/health": [
+        "libs/health/src"
+      ],
+      "@libs/health/*": [
+        "libs/health/src/*"
+      ],
+      "@libs/logger": [
+        "libs/logger/src"
+      ],
+      "@libs/logger/*": [
+        "libs/logger/src/*"
+      ],
+      "@libs/entity": [
+        "libs/entity/src"
+      ],
+      "@libs/entity/*": [
+        "libs/entity/src/*"
+      ],
+      "@libs/bootstrap": [
+        "libs/bootstrap/src"
+      ],
+      "@libs/bootstrap/*": [
+        "libs/bootstrap/src/*"
+      ],
+      "@libs/testing": [
+        "libs/testing/src"
+      ],
+      "@libs/testing/*": [
+        "libs/testing/src/*"
+      ]
     }
   }
 }
