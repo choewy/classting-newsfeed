@@ -4,9 +4,9 @@ import { SubscribedSchoolNewsListDto } from './dtos/subscribed-school-news-list.
 import { SubscribedSchoolPageListDto } from './dtos/subscribed-school-page-list.dto';
 import { GetSubscribedSchoolNewsListQuery } from './queries/get-subscribed-school-news-list.query';
 import { GetSubscribedSchoolPageListQuery } from './queries/get-subscribed-school-page-list.query';
-import { SchoolNewsRepository } from '../repositories/school-news.repository';
-import { SchoolPageRepository } from '../repositories/school-page.repository';
-import { SubscriptionRepository } from '../repositories/subscription.repository';
+import { SchoolNewsRepository } from '../common/repositories/school-news.repository';
+import { SchoolPageRepository } from '../common/repositories/school-page.repository';
+import { SubscriptionRepository } from '../common/repositories/subscription.repository';
 
 @Injectable()
 export class SubscriptionService {
@@ -49,16 +49,15 @@ export class SubscriptionService {
 
     const subscription = await this.subscriptionRepository.findOneByStudentAndSchoolPage(studentId, schoolPageId);
 
-    switch (subscription?.status) {
-      case true:
-        return;
-
-      case false:
-        await this.subscriptionRepository.deleteOne(studentId, schoolPageId);
-
-      default:
-        await this.subscriptionRepository.insertAndIncreaseCount(studentId, schoolPageId);
+    if (subscription?.status === true) {
+      return;
     }
+
+    if (subscription?.status === false) {
+      await this.subscriptionRepository.deleteOne(studentId, schoolPageId);
+    }
+
+    await this.subscriptionRepository.insertAndIncreaseCount(studentId, schoolPageId);
   }
 
   async unsubscribeSchoolPage(studentId: number, schoolPageId: number) {

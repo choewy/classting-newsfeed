@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 
 import { SchoolPageListDto } from './dtos/school-page-list.dto';
 import { GetSchoolPageListQuery } from './queries/get-school-page-list.query';
-import { SchoolPageRepository } from '../repositories/school-page.repository';
+import { SchoolPageRepository } from '../common/repositories/school-page.repository';
 
 @Injectable()
 export class SchoolPageService {

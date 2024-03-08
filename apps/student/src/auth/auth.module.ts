@@ -8,8 +8,8 @@ import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { JwtAuthStrategy } from './strategies/jwt-auth.strategy';
-import { JwtConfigReturnType } from '../configs';
-import { StudentRepository } from '../repositories/student.repository';
+import { JwtConfigReturnType } from '../common/configs';
+import { StudentRepository } from '../common/repositories/student.repository';
 
 @Module({
   imports: [
