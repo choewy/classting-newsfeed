@@ -32,7 +32,9 @@
       "@libs/entity": ["libs/entity/src"],
       "@libs/entity/*": ["libs/entity/src/*"],
       "@libs/bootstrap": ["libs/bootstrap/src"],
-      "@libs/bootstrap/*": ["libs/bootstrap/src/*"]
+      "@libs/bootstrap/*": ["libs/bootstrap/src/*"],
+      "@libs/testing": ["libs/testing/src"],
+      "@libs/testing/*": ["libs/testing/src/*"]
     }
   }
 }
