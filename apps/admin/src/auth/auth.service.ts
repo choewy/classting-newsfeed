@@ -3,43 +3,41 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { compareSync, hashSync } from 'bcrypt';
 
-import { RefreshTokensCommand } from './commands/refresh-tokens.command';
-import { SignInCommand } from './commands/signin.command';
-import { SignUpCommand } from './commands/signup.command';
+import { SignInCommand, SignUpCommand, RefreshTokensCommand } from './commands';
 import { JwtTokensDto } from './dtos/jwt-tokens.dto';
 import { JwtConfigReturnType } from '../common/configs';
-import { AdminRepository } from '../common/repositories/admin.repository';
+import { AdminRepository } from '../common/repositories';
 
 @Injectable()
 export class AuthService {
-  private readonly jwtConfig: JwtConfigReturnType;
-
   constructor(
     private readonly jwtService: JwtService,
     private readonly configService: ConfigService,
     private readonly adminRepository: AdminRepository,
-  ) {
-    this.jwtConfig = this.configService.get<JwtConfigReturnType>('jwt');
-  }
+  ) {}
 
   createTokens(id: number) {
     const payload = { id };
 
+    const config = this.configService.get<JwtConfigReturnType>('jwt');
+
     return new JwtTokensDto(
-      this.jwtService.sign(payload, { ...this.jwtConfig.access.signOptions, secret: this.jwtConfig.access.secret }),
-      this.jwtService.sign(payload, { ...this.jwtConfig.refresh.signOptions, secret: this.jwtConfig.refresh.secret }),
+      this.jwtService.sign(payload, { ...config.access.signOptions, secret: config.access.secret }),
+      this.jwtService.sign(payload, { ...config.refresh.signOptions, secret: config.refresh.secret }),
     );
   }
 
   async refreshTokens(command: RefreshTokensCommand) {
+    const config = this.configService.get<JwtConfigReturnType>('jwt');
+
     const access = await this.jwtService
-      .verifyAsync(command.access, { ...this.jwtConfig.access.verifyOptions, secret: this.jwtConfig.access.secret, ignoreExpiration: true })
+      .verifyAsync(command.access, { ...config.access.verifyOptions, secret: config.access.secret, ignoreExpiration: true })
       .catch((e) => {
         throw new UnauthorizedException(e);
       });
 
     const refresh = await this.jwtService
-      .verifyAsync(command.refresh, { ...this.jwtConfig.refresh.verifyOptions, secret: this.jwtConfig.refresh.secret })
+      .verifyAsync(command.refresh, { ...config.refresh.verifyOptions, secret: config.refresh.secret })
       .catch((e) => {
         throw new UnauthorizedException(e);
       });
@@ -60,13 +58,12 @@ export class AuthService {
       throw new ConflictException('already exist admin.');
     }
 
-    const admin = this.adminRepository.create({
+    const admin = await this.adminRepository.insertOne({
       name: command.name,
       email: command.email,
       password: hashSync(command.password, 10),
     });
 
-    await this.adminRepository.insert(admin);
     return this.createTokens(admin.id);
   }
 
