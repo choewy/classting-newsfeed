@@ -14,6 +14,7 @@ export const TypeormConfig = registerAs(
     synchronize: process.env.NODE_ENV === 'local' ? process.env.MYSQL_SYNCHRONIZE === 'true' : false,
     entities: Object.values(entities),
     logging: true,
+    dropSchema: true,
     autoLoadEntities: true,
   }),
 );

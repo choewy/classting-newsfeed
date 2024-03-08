@@ -9,8 +9,6 @@
 /docker/**/build.tar.gz
 /docker/**/logs
 
-.initialize
-
 # Logs
 logs
 *.log

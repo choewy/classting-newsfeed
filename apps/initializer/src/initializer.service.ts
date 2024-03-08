@@ -1,7 +1,5 @@
-import { existsSync, writeFileSync } from 'fs';
-
 import { AdminEntity, SchoolNewsEntity, SchoolPageEntity, StudentEntity } from '@libs/entity';
-import { Injectable, Logger, OnApplicationBootstrap } from '@nestjs/common';
+import { Injectable, OnApplicationBootstrap } from '@nestjs/common';
 import { hashSync } from 'bcrypt';
 import { DataSource } from 'typeorm';
 
@@ -10,20 +8,10 @@ export class InitializerService implements OnApplicationBootstrap {
   constructor(private readonly dataSource: DataSource) {}
 
   async onApplicationBootstrap(): Promise<void> {
-    const initialized = [process.env.PWD, '.initialize'].join('/');
-
-    if (existsSync(initialized)) {
-      return Logger.verbose('already initialized.');
-    }
-
     await this.upsertAdmins();
     await this.upsertStudents();
     await this.upsertSchoolPages();
     await this.upsertSchoolNews();
-
-    writeFileSync(initialized, String(new Date()), 'utf-8');
-
-    return Logger.verbose('success initialized.');
   }
 
   private password = hashSync('password', 10);
