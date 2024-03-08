@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
-import { NewsFeedListDto } from './dtos/news-feed-list.dto';
-import { GetSchoolNewsFeedListQuery } from './queries/get-school-news-feeds.query';
+import { NewsFeedListDto } from './dtos';
+import { GetSchoolNewsFeedListQuery } from './queries';
 import { SchoolNewsRepository } from '../common/repositories';
 
 @Injectable()

@@ -3,10 +3,8 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import { compareSync, hashSync } from 'bcrypt';
 
-import { RefreshTokensCommand } from './commands/refresh-tokens.command';
-import { SignInCommand } from './commands/signin.command';
-import { SignUpCommand } from './commands/signup.command';
-import { JwtTokensDto } from './dtos/jwt-tokens.dto';
+import { SignInCommand, SignUpCommand, RefreshTokensCommand } from './commands';
+import { JwtTokensDto } from './dtos';
 import { JwtConfigReturnType } from '../common/configs';
 import { StudentRepository } from '../common/repositories';
 

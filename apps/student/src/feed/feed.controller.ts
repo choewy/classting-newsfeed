@@ -1,11 +1,10 @@
 import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 
-import { NewsFeedListDto } from './dtos/news-feed-list.dto';
+import { NewsFeedListDto } from './dtos';
 import { FeedService } from './feed.service';
-import { GetSchoolNewsFeedListQuery } from './queries/get-school-news-feeds.query';
-import { ReqUser } from '../auth/decorators/req-user';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { GetSchoolNewsFeedListQuery } from './queries';
+import { JwtAuthGuard, ReqUser } from '../auth';
 
 @ApiTags('뉴스피드')
 @Controller('feeds')

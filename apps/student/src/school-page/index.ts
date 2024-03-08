@@ -1,1 +1,1 @@
-export * from './school-page.controller';
+export * from './school-page.module';

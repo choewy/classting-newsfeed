@@ -5,11 +5,11 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { AuthModule } from './auth/auth.module';
+import { AuthModule } from './auth';
 import { JwtConfig, TypeormConfig } from './common/configs';
-import { FeedModule } from './feed/feed.module';
-import { ShcoolPageModule } from './school-page/school-page.module';
-import { SubscriptionModule } from './subscription/subscription.module';
+import { FeedModule } from './feed';
+import { ShcoolPageModule } from './school-page';
+import { SubscriptionModule } from './subscription';
 
 @Module({
   imports: [

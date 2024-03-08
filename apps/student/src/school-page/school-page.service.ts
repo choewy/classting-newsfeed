@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 
-import { SchoolPageListDto } from './dtos/school-page-list.dto';
-import { GetSchoolPageListQuery } from './queries/get-school-page-list.query';
+import { SchoolPageListDto } from './dtos';
+import { GetSchoolPageListQuery } from './queries';
 import { SchoolPageRepository } from '../common/repositories';
 
 @Injectable()

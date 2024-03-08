@@ -1,15 +1,11 @@
 import { Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiNoContentResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 
-import { SubscribeSchoolPageCommand } from './commands/subscribe-school-page.command';
-import { SubscribedSchoolNewsListDto } from './dtos/subscribed-school-news-list.dto';
-import { SubscribedSchoolPageListDto } from './dtos/subscribed-school-page-list.dto';
-import { GetSubscribedSchoolNewsListQuery } from './queries/get-subscribed-school-news-list.query';
-import { GetSubscribedSchoolNewsQuery } from './queries/get-subscribed-school-news.query';
-import { GetSubscribedSchoolPageListQuery } from './queries/get-subscribed-school-page-list.query';
+import { SubscribeSchoolPageCommand } from './commands';
+import { SubscribedSchoolPageListDto, SubscribedSchoolNewsListDto } from './dtos';
+import { GetSubscribedSchoolPageListQuery, GetSubscribedSchoolNewsQuery, GetSubscribedSchoolNewsListQuery } from './queries';
 import { SubscriptionService } from './subscription.service';
-import { ReqUser } from '../auth/decorators/req-user';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { JwtAuthGuard, ReqUser } from '../auth';
 
 @ApiTags('학교 페이지 구독')
 @Controller('subscriptions')

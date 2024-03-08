@@ -2,10 +2,8 @@ import { Body, Controller, Post } from '@nestjs/common';
 import { ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 import { AuthService } from './auth.service';
-import { RefreshTokensCommand } from './commands/refresh-tokens.command';
-import { SignInCommand } from './commands/signin.command';
-import { SignUpCommand } from './commands/signup.command';
-import { JwtTokensDto } from './dtos/jwt-tokens.dto';
+import { SignInCommand, SignUpCommand, RefreshTokensCommand } from './commands';
+import { JwtTokensDto } from './dtos';
 
 @ApiTags('인증')
 @Controller('auth')

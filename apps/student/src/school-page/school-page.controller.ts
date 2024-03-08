@@ -1,12 +1,10 @@
 import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 
-import { SchoolPageListDto } from './dtos/school-page-list.dto';
-import { GetSchoolPageListQuery } from './queries/get-school-page-list.query';
+import { SchoolPageListDto } from './dtos';
+import { GetSchoolPageListQuery } from './queries';
 import { SchoolPageService } from './school-page.service';
-import { IgnoreJwtAuthGuardError } from '../auth/decorators/ignore-jwt-auth-guard-error';
-import { ReqUser } from '../auth/decorators/req-user';
-import { JwtAuthGuard } from '../auth/guards/jwt-auth.guard';
+import { JwtAuthGuard, IgnoreJwtAuthGuardError, ReqUser } from '../auth';
 
 @ApiTags('학생 - 학교 페이지')
 @Controller('school/pages')

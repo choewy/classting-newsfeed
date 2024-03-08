@@ -6,8 +6,8 @@ import { PassportModule } from '@nestjs/passport';
 
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { JwtAuthGuard } from './guards/jwt-auth.guard';
-import { JwtAuthStrategy } from './strategies/jwt-auth.strategy';
+import { JwtAuthGuard } from './guards';
+import { JwtAuthStrategy } from './strategies';
 import { JwtConfigReturnType } from '../common/configs';
 import { StudentRepository } from '../common/repositories';
 
