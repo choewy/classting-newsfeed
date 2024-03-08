@@ -4,16 +4,14 @@ import { SubscribedSchoolNewsListDto } from './dtos/subscribed-school-news-list.
 import { SubscribedSchoolPageListDto } from './dtos/subscribed-school-page-list.dto';
 import { GetSubscribedSchoolNewsListQuery } from './queries/get-subscribed-school-news-list.query';
 import { GetSubscribedSchoolPageListQuery } from './queries/get-subscribed-school-page-list.query';
-import { SchoolNewsRepository } from '../common/repositories/school-news.repository';
-import { SchoolPageRepository } from '../common/repositories/school-page.repository';
-import { SubscriptionRepository } from '../common/repositories/subscription.repository';
+import { SchoolPageRepository, SchoolNewsRepository, SubscriptionRepository } from '../common/repositories';
 
 @Injectable()
 export class SubscriptionService {
   constructor(
-    private readonly subscriptionRepository: SubscriptionRepository,
     private readonly schoolPageRepository: SchoolPageRepository,
     private readonly schoolNewsRepository: SchoolNewsRepository,
+    private readonly subscriptionRepository: SubscriptionRepository,
   ) {}
 
   async getSubscribedSchoolPageList(studentId: number, query: GetSubscribedSchoolPageListQuery) {

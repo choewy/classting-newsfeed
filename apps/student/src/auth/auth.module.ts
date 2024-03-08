@@ -9,7 +9,7 @@ import { AuthService } from './auth.service';
 import { JwtAuthGuard } from './guards/jwt-auth.guard';
 import { JwtAuthStrategy } from './strategies/jwt-auth.strategy';
 import { JwtConfigReturnType } from '../common/configs';
-import { StudentRepository } from '../common/repositories/student.repository';
+import { StudentRepository } from '../common/repositories';
 
 @Module({
   imports: [

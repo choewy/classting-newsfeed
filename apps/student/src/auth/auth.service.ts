@@ -8,7 +8,7 @@ import { SignInCommand } from './commands/signin.command';
 import { SignUpCommand } from './commands/signup.command';
 import { JwtTokensDto } from './dtos/jwt-tokens.dto';
 import { JwtConfigReturnType } from '../common/configs';
-import { StudentRepository } from '../common/repositories/student.repository';
+import { StudentRepository } from '../common/repositories';
 
 @Injectable()
 export class AuthService {

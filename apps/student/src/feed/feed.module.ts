@@ -3,11 +3,10 @@ import { Module } from '@nestjs/common';
 
 import { FeedController } from './feed.controller';
 import { FeedService } from './feed.service';
-import { SchoolNewsRepository } from '../common/repositories/school-news.repository';
-import { SubscriptionRepository } from '../common/repositories/subscription.repository';
+import { SchoolNewsRepository } from '../common/repositories';
 
 @Module({
-  imports: [TypeOrmLibsModule.forFeature([SchoolNewsRepository, SubscriptionRepository])],
+  imports: [TypeOrmLibsModule.forFeature([SchoolNewsRepository])],
   controllers: [FeedController],
   providers: [FeedService],
 })
