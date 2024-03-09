@@ -1,5 +1,6 @@
 import { HttpExceptionErrorDto, HttpExceptionDto } from '@libs/bootstrap';
-import { HttpException, Type, applyDecorators } from '@nestjs/common';
+import { ValidationFailException } from '@libs/bootstrap/exceptions';
+import { HttpException, Type, UnauthorizedException, applyDecorators } from '@nestjs/common';
 import { ApiResponse, ApiResponseProperty } from '@nestjs/swagger';
 
 class ApiExceptionErrorType implements HttpExceptionErrorDto {
@@ -54,3 +55,8 @@ export const ApiException = (...Exceptions: Type<HttpException>[]) => {
 
   return applyDecorators(...decorators);
 };
+
+export const ApiExtendsAuthException = (...Exceptions: Type<HttpException>[]) => ApiException(UnauthorizedException, ...Exceptions);
+export const ApiExtendsPipeException = (...Exceptions: Type<HttpException>[]) => ApiException(ValidationFailException, ...Exceptions);
+export const ApiExtendsException = (...Exceptions: Type<HttpException>[]) =>
+  ApiException(UnauthorizedException, ValidationFailException, ...Exceptions);

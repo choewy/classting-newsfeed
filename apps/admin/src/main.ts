@@ -1,7 +1,7 @@
 import { createBootstrapOptions } from '@libs/bootstrap';
 import { WinstonLogger } from '@libs/logger';
-import { SwaggerLibsModule } from '@libs/swagger';
 import { NestFactory } from '@nestjs/core';
+import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 import { AppModule } from './app.module';
 
@@ -9,7 +9,10 @@ async function bootstrap() {
   const logger = WinstonLogger.create('admin');
   const app = await NestFactory.create(AppModule, { logger });
 
-  SwaggerLibsModule.setup('swagger', app, 'Classting Admin APIs');
+  const builder = new DocumentBuilder().setTitle('Classting Admin APIs').addBearerAuth();
+  const document = SwaggerModule.createDocument(app, builder.build());
+
+  SwaggerModule.setup('swagger', app, document);
 
   const options = createBootstrapOptions(app);
 

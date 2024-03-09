@@ -1,4 +1,19 @@
-import { Body, Controller, Delete, Get, HttpCode, HttpStatus, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
+import { ApiExtendsException } from '@libs/swagger';
+import {
+  Body,
+  Controller,
+  Delete,
+  ForbiddenException,
+  Get,
+  HttpCode,
+  HttpStatus,
+  NotFoundException,
+  Param,
+  Patch,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiBearerAuth, ApiCreatedResponse, ApiNoContentResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 import { CreateSchoolNewsCommad, UpdateSchoolNewsCommad } from './commands';
@@ -17,6 +32,7 @@ export class SchoolNewsController {
   @ApiBearerAuth()
   @ApiOperation({ summary: '관리자 학교 소식 목록 조회' })
   @ApiOkResponse({ type: SchoolNewsListDto })
+  @ApiExtendsException(NotFoundException)
   async getShoolNewsList(@ReqUser() adminId: number, @Query() query: GetSchoolNewsListQuery) {
     return this.schoolNewsService.getSchoolNewsList(adminId, query);
   }
@@ -25,6 +41,7 @@ export class SchoolNewsController {
   @ApiBearerAuth()
   @ApiOperation({ summary: '관리자 학교 소식 발행' })
   @ApiCreatedResponse({ type: SchoolNewsDto })
+  @ApiExtendsException(NotFoundException)
   async createSchoolNews(@ReqUser() adminId: number, @Body() command: CreateSchoolNewsCommad) {
     return this.schoolNewsService.createSchoolNews(adminId, command);
   }
@@ -33,6 +50,7 @@ export class SchoolNewsController {
   @ApiBearerAuth()
   @ApiOperation({ summary: '관리자 학교 소식 수정' })
   @ApiOkResponse({ type: SchoolNewsDto })
+  @ApiExtendsException(NotFoundException, ForbiddenException)
   async updateSchoolNews(@ReqUser() adminId: number, @Param() params: GetSchoolNewsQuery, @Body() command: UpdateSchoolNewsCommad) {
     return this.schoolNewsService.updateSchoolNews(adminId, params.id, command);
   }
@@ -42,6 +60,7 @@ export class SchoolNewsController {
   @ApiBearerAuth()
   @ApiOperation({ summary: '관리자 학교 소식 삭제' })
   @ApiNoContentResponse()
+  @ApiExtendsException(NotFoundException, ForbiddenException)
   async deleteSchoolNews(@ReqUser() adminId: number, @Param() params: GetSchoolNewsQuery) {
     return this.schoolNewsService.deleteSchoolNews(adminId, params.id);
   }

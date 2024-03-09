@@ -1,4 +1,5 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { ApiExtendsException, ApiExtendsPipeException } from '@libs/swagger';
+import { BadRequestException, Body, ConflictException, Controller, Post } from '@nestjs/common';
 import { ApiCreatedResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 import { AuthService } from './auth.service';
@@ -13,6 +14,7 @@ export class AuthController {
   @Post('signin')
   @ApiOperation({ summary: '로그인' })
   @ApiCreatedResponse({ type: JwtTokensDto })
+  @ApiExtendsException()
   async signIn(@Body() command: SignInCommand) {
     return this.authService.signIn(command);
   }
@@ -20,6 +22,7 @@ export class AuthController {
   @Post('signup')
   @ApiOperation({ summary: '회원가입' })
   @ApiCreatedResponse({ type: JwtTokensDto })
+  @ApiExtendsPipeException(BadRequestException, ConflictException)
   async signUp(@Body() command: SignUpCommand) {
     return this.authService.signUp(command);
   }
@@ -27,6 +30,7 @@ export class AuthController {
   @Post('tokens/refresh')
   @ApiOperation({ summary: '토큰 갱신/재발급' })
   @ApiCreatedResponse({ type: JwtTokensDto })
+  @ApiExtendsException()
   async refreshTokens(@Body() command: RefreshTokensCommand) {
     return this.authService.refreshTokens(command);
   }
