@@ -23,7 +23,7 @@ describe(SchoolPageService.name, () => {
   });
 
   describe('getSchoolPageList', () => {
-    const query = TestingFixture.of(GetSchoolPageListQuery, { skip: 0, take: 0 });
+    const query = TestingFixture.of(GetSchoolPageListQuery, { skip: 0, take: 10 });
 
     it('SchoolPage 목록 조회 시 SchoolPageListDto를 반환한다.', () => {
       jest.spyOn(module.get(SchoolPageRepository), 'findManyAndCount').mockResolvedValue([[], 1]);
