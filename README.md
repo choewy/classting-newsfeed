@@ -18,7 +18,13 @@ npm ci
 npm run env
 ```
 
-필요에 따라서 아래 명령어로 Docker MySQL을 실행할 수 있습니다.
+아래 명령어를 통해 mysql 및 모든 애플리케이션(initializer, admin, student)을 Docker로 실행시킬 수 있습니다.
+
+```bash
+npm run docker
+```
+
+또는, 아래 명령어로 mysql 컨테이너만 실행시킬 수 있습니다.
 
 ```bash
 npm run docker:mysql
