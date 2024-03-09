@@ -8,7 +8,7 @@ x-environment: &environment
   MYSQL_HOST: mysql
   MYSQL_PORT: 3306
   MYSQL_USERNAME: root
-  MYSQL_PASSWORd: newsfeed
+  MYSQL_PASSWORD: newsfeed
   MYSQL_DATABASE: newsfeed
   MYSQL_SYNCHRONIZE: false
 
