@@ -1,6 +1,8 @@
-import { CallHandler, ExecutionContext, HttpStatus, Logger, NestInterceptor } from '@nestjs/common';
+import { CallHandler, ExecutionContext, Logger, NestInterceptor } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { tap } from 'rxjs';
+
+import { HttpLogDto } from './dtos';
 
 export class AppInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler) {
@@ -10,23 +12,9 @@ export class AppInterceptor implements NestInterceptor {
     return next.handle().pipe(
       tap(() => {
         const http = context.switchToHttp();
-        const req = http.getRequest<Request>();
-        const res = http.getResponse<Response>();
+        const log = new HttpLogDto(http.getRequest<Request>());
 
-        const status = Object.entries(HttpStatus).find(([, v]) => v === res.statusCode);
-
-        Logger.verbose({
-          method: req.method,
-          path: req.path,
-          params: req.params,
-          query: req.query,
-          status: status?.[1],
-          message: status?.[0],
-          ip: req.ip,
-          xforwaredfor: req.header['x-forwared-for'],
-          context: req['context'],
-          handler: req['handler'],
-        });
+        Logger.verbose(log.toSuccess(http.getResponse<Response>()));
       }),
     );
   }

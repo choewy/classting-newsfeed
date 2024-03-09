@@ -2,25 +2,13 @@ import { ArgumentsHost, Catch, HttpException, InternalServerErrorException, Logg
 import { BaseExceptionFilter } from '@nestjs/core';
 import { Request, Response } from 'express';
 
+import { HttpExceptionDto, HttpLogDto } from './dtos';
+
 @Catch()
 export class AppFilter extends BaseExceptionFilter {
   catch(e: Error | HttpException, host: ArgumentsHost): void {
     const http = host.switchToHttp();
-    const req = http.getRequest<Request>();
-    const log = {
-      method: req.method,
-      path: req.path,
-      params: req.params,
-      query: req.query,
-      status: -1,
-      message: '',
-      ip: req.ip,
-      xforwaredfor: req.header['x-forwared-for'],
-      context: req['context'],
-      handler: req['handler'],
-      error: undefined,
-      exception: undefined,
-    };
+    const log = new HttpLogDto(http.getRequest<Request>());
 
     let exception = e as HttpException;
 
@@ -28,29 +16,11 @@ export class AppFilter extends BaseExceptionFilter {
       exception = new InternalServerErrorException();
       exception.cause = { name: e.name, message: e.message };
 
-      log.status = 500;
-      log.message = exception.name;
-      log.exception = exception;
-      log.error = {
-        name: e.name,
-        message: e.message,
-        stack: e.stack,
-      };
-
-      Logger.error(log);
+      Logger.error(log.toException(exception, e));
     } else {
-      log.status = e.getStatus();
-      log.message = exception.name;
-      log.exception = e;
-
-      Logger.warn(log);
+      Logger.warn(log.toException(exception));
     }
 
-    host.switchToHttp().getResponse<Response>().status(exception.getStatus()).send({
-      name: exception.name,
-      message: exception.message,
-      statusCode: exception.getStatus(),
-      error: exception.cause,
-    });
+    host.switchToHttp().getResponse<Response>().status(exception.getStatus()).send(new HttpExceptionDto(exception));
   }
 }
