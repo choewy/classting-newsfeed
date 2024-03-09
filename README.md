@@ -1,11 +1,11 @@
 # Classting NewsFeed
 
-- OS : `MacOS(M2)`
-- Node: `v20.11.1`
-- npm : `v10.2.4`
-- MySQL : `8.0`
-- Docker : `v23.0.5`
-- docker-compose : `v2.17.3`
+- OS : MacOS(M2)
+- Node: v20.11.1
+- npm : v10.2.4
+- MySQL : 8.0
+- Docker : v23.0.5
+- docker-compose : v2.17.3
 
 ## 설정
 
@@ -18,21 +18,7 @@ npm ci
 npm run env
 ```
 
-### Docker(applications + mysql)
-
-아래 명령어로 모든 애플리케이션을 실행할 수 있습니다.
-
-```bash
-npm run docker
-```
-
-- admin : http://localhost:4000/swagger
-- student : http://localhost:4001/swagger
-- mysql : mysql://localhost:3307/newsfeed
-
-### Docker(mysql only)
-
-아래 명령어로 MySQL 컨테이너만 실행할 수 있습니다.
+필요에 따라서 아래 명령어로 Docker MySQL을 실행할 수 있습니다.
 
 ```bash
 npm run docker:mysql
