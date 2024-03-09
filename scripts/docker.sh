@@ -8,6 +8,6 @@ npm run build
 
 tar -czvf docker/build.tar.gz .env.public dist package*
 
-cd docker && docker-compose up --build -d mysql
+cd docker && docker-compose up --build -d
 
 exit 0
