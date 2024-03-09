@@ -10,4 +10,4 @@ RUN rm build.tar.gz
 
 RUN npm ci
 
-CMD ["node", "dist/apps/admin/src/main.js"]
+CMD ["node", "dist/apps/student/src/main.js"]
