@@ -2,10 +2,10 @@ import { ArgumentsHost, Catch, HttpException, InternalServerErrorException, Logg
 import { BaseExceptionFilter } from '@nestjs/core';
 import { Request, Response } from 'express';
 
-import { HttpExceptionDto, HttpLogDto } from './dtos';
+import { HttpExceptionDto, HttpLogDto } from '../dtos';
 
 @Catch()
-export class AppFilter extends BaseExceptionFilter {
+export class HttpExceptionFilter extends BaseExceptionFilter {
   catch(e: Error | HttpException, host: ArgumentsHost): void {
     const http = host.switchToHttp();
     const log = new HttpLogDto(http.getRequest<Request>());
