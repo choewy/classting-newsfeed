@@ -1,3 +1,4 @@
+import { ApiExtendsException } from '@libs/swagger';
 import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 
@@ -16,6 +17,7 @@ export class FeedController {
   @ApiBearerAuth()
   @ApiOperation({ summary: '구독 중인 학교 뉴스피드 조회' })
   @ApiOkResponse({ type: [NewsFeedListDto] })
+  @ApiExtendsException()
   async getSchoolNewsFeedList(@ReqUser() studentId: number, @Query() query: GetSchoolNewsFeedListQuery) {
     return this.feedService.getSchoolNewsFeedList(studentId, query);
   }

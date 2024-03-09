@@ -1,4 +1,17 @@
-import { Controller, Delete, Get, HttpCode, HttpStatus, Param, Post, Query, UseGuards } from '@nestjs/common';
+import { ApiExtendsException } from '@libs/swagger';
+import {
+  Controller,
+  Delete,
+  ForbiddenException,
+  Get,
+  HttpCode,
+  HttpStatus,
+  NotFoundException,
+  Param,
+  Post,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { ApiBearerAuth, ApiNoContentResponse, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 import { SubscribeSchoolPageCommand } from './commands';
@@ -17,6 +30,7 @@ export class SubscriptionController {
   @ApiBearerAuth()
   @ApiOperation({ summary: '구독 중인 학교 페이지 목록 조회' })
   @ApiOkResponse({ type: SubscribedSchoolPageListDto })
+  @ApiExtendsException()
   async getSubscribedSchoolPageList(@ReqUser() studentId: number, @Query() query: GetSubscribedSchoolPageListQuery) {
     return this.subscriptionService.getSubscribedSchoolPageList(studentId, query);
   }
@@ -25,6 +39,7 @@ export class SubscriptionController {
   @ApiBearerAuth()
   @ApiOperation({ summary: '구독 중인 학교 페이지 소식 목록 조회' })
   @ApiOkResponse({ type: SubscribedSchoolNewsListDto })
+  @ApiExtendsException(NotFoundException, ForbiddenException)
   async getSubscribedSchoolNewsList(
     @ReqUser() studentId: number,
     @Param() param: GetSubscribedSchoolNewsQuery,
@@ -38,6 +53,7 @@ export class SubscriptionController {
   @ApiBearerAuth()
   @ApiOperation({ summary: '학교 페이지 구독' })
   @ApiNoContentResponse()
+  @ApiExtendsException(NotFoundException)
   async subscribeSchoolPage(@ReqUser() studentId: number, @Param() command: SubscribeSchoolPageCommand) {
     return this.subscriptionService.subscribeSchoolPage(studentId, command.id);
   }
@@ -47,6 +63,7 @@ export class SubscriptionController {
   @ApiBearerAuth()
   @ApiOperation({ summary: '학교 페이지 구독 취소' })
   @ApiNoContentResponse()
+  @ApiExtendsException(NotFoundException)
   async unsubscribeSchoolPage(@ReqUser() studentId: number, @Param() command: SubscribeSchoolPageCommand) {
     return this.subscriptionService.unsubscribeSchoolPage(studentId, command.id);
   }

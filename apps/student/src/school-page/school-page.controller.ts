@@ -1,3 +1,4 @@
+import { ApiExtendsException } from '@libs/swagger';
 import { Controller, Get, Query, UseGuards } from '@nestjs/common';
 import { ApiBearerAuth, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 
@@ -17,6 +18,7 @@ export class SchoolPageController {
   @ApiBearerAuth()
   @ApiOperation({ summary: '학교 페이지 목록 조회' })
   @ApiOkResponse({ type: SchoolPageListDto })
+  @ApiExtendsException()
   async getSchoolPageList(@ReqUser() studentId: number | null, @Query() query: GetSchoolPageListQuery) {
     return this.schoolPageService.getSchoolPageList(studentId, query);
   }
