@@ -1,17 +1,15 @@
 import { createBootstrapOptions } from '@libs/bootstrap';
 import { WinstonLogger } from '@libs/logger';
+import { SwaggerLibsModule } from '@libs/swagger';
 import { NestFactory } from '@nestjs/core';
-import { DocumentBuilder, SwaggerModule } from '@nestjs/swagger';
 
 import { AppModule } from './app.module';
 
 async function bootstrap() {
   const logger = WinstonLogger.create('student');
-  const builder = new DocumentBuilder().setTitle('Classting Student APIs').addBearerAuth().build();
-
   const app = await NestFactory.create(AppModule, { logger });
 
-  SwaggerModule.setup('swagger', app, SwaggerModule.createDocument(app, builder));
+  SwaggerLibsModule.setup('swagger', app, 'Classting Student APIs');
 
   const options = createBootstrapOptions(app);
 

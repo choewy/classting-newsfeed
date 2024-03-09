@@ -66,6 +66,12 @@
       ],
       "@libs/testing/*": [
         "libs/testing/src/*"
+      ],
+      "@libs/swagger": [
+        "libs/swagger/src"
+      ],
+      "@libs/swagger/*": [
+        "libs/swagger/src/*"
       ]
     }
   }
